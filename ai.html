@@ -48,7 +48,7 @@
             z-index: 0;
         }
         
-        /* 夢境過渡動畫 - 修正為下墜感覺 */
+        /* 夢境過渡動畫 - 全新炫炮效果 */
         .dream-transition {
             position: fixed;
             top: 0;
@@ -63,17 +63,14 @@
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s ease-out;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backdrop-filter: blur(0px);
-            transform: translateY(-100vh);
         }
         
         .dream-transition.active {
             opacity: 1;
             visibility: visible;
             backdrop-filter: blur(30px);
-            transform: translateY(0);
-            transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
         .dream-particles {
@@ -85,12 +82,15 @@
         
         .dream-particle {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.9);
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, #ffffff, #8B5CF6, #06B6D4);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: dreamFall 3s linear infinite;
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 40px rgba(139, 92, 246, 0.6),
+                0 0 60px rgba(6, 182, 212, 0.4);
+            animation: dreamParticleFall 4s linear infinite;
         }
         
         .dream-vortex {
@@ -98,9 +98,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 4px solid rgba(255, 255, 255, 0.4);
+            border: 4px solid rgba(255, 255, 255, 0.6);
             border-radius: 50%;
             animation: dreamVortex 3s ease-out infinite;
+            box-shadow: 
+                0 0 50px rgba(139, 92, 246, 0.8),
+                inset 0 0 50px rgba(6, 182, 212, 0.6);
         }
         
         .dream-text {
@@ -110,34 +113,65 @@
             transform: translate(-50%, -50%);
             text-align: center;
             opacity: 0;
-            animation: dreamTextFall 2s ease-out 0.5s forwards;
+            animation: dreamTextAppear 2s ease-out 1s forwards;
         }
         
         .dream-text h2 {
             font-size: 3rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, #06B6D4, #8B5CF6);
+            background: linear-gradient(135deg, #ffffff, #06B6D4, #8B5CF6, #A855F7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1rem;
             animation: dreamGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
         }
         
         .dream-text p {
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.8);
         }
         
         .dream-loading {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #ffffff;
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-right: 4px solid #8B5CF6;
+            border-bottom: 4px solid #06B6D4;
             border-radius: 50%;
-            animation: dreamSpin 1s linear infinite;
+            animation: dreamSpin 1.5s linear infinite;
             margin: 0 auto;
+            box-shadow: 
+                0 0 30px rgba(139, 92, 246, 0.8),
+                0 0 60px rgba(6, 182, 212, 0.6);
+        }
+        
+        /* 夢境爆炸效果 */
+        .dream-explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ffffff, #8B5CF6, #06B6D4);
+            border-radius: 50%;
+            animation: dreamExplosion 2s ease-out infinite;
+        }
+        
+        /* 夢境波紋效果 */
+        .dream-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: dreamRipple 4s ease-out infinite;
         }
         
         /* 隱藏Demo和介紹內容 */
@@ -145,21 +179,24 @@
             display: none !important;
         }
         
-        /* 下墜動畫效果 */
-        @keyframes dreamFall {
+        /* 夢境動畫關鍵幀 */
+        @keyframes dreamParticleFall {
             0% { 
-                transform: translateY(-100vh) scale(0.5) rotate(0deg);
+                transform: translateY(-100vh) scale(0.3) rotate(0deg);
                 opacity: 0;
             }
-            20% { 
+            10% { 
                 opacity: 1;
             }
-            80% { 
+            50% { 
+                transform: translateY(50vh) scale(1.5) rotate(180deg);
                 opacity: 1;
-                transform: translateY(80vh) scale(1.2) rotate(180deg);
+            }
+            90% { 
+                opacity: 1;
             }
             100% { 
-                transform: translateY(120vh) scale(0.3) rotate(360deg);
+                transform: translateY(120vh) scale(0.2) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -171,49 +208,93 @@
                 transform: translate(-50%, -50%) scale(0) rotate(0deg);
                 opacity: 0;
             }
-            30% {
+            25% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1) rotate(180deg);
+                transform: translate(-50%, -50%) scale(1) rotate(90deg);
             }
-            70% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(2) rotate(540deg);
+            50% {
+                transform: translate(-50%, -50%) scale(2) rotate(270deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) scale(3) rotate(450deg);
             }
             100% {
-                width: 400px;
-                height: 400px;
-                transform: translate(-50%, -50%) scale(3) rotate(720deg);
+                width: 500px;
+                height: 500px;
+                transform: translate(-50%, -50%) scale(4) rotate(720deg);
                 opacity: 0;
             }
         }
         
-        @keyframes dreamTextFall {
+        @keyframes dreamTextAppear {
             0% {
                 opacity: 0;
-                transform: translate(-50%, -300%) scale(0.5);
+                transform: translate(-50%, -300%) scale(0.5) rotate(-10deg);
             }
             50% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
+                transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
             }
             100% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
             }
         }
         
         @keyframes dreamGlow {
             0% {
-                text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+                text-shadow: 
+                    0 0 20px rgba(139, 92, 246, 0.8),
+                    0 0 40px rgba(6, 182, 212, 0.6);
             }
             100% {
-                text-shadow: 0 0 40px rgba(6, 182, 212, 0.8), 0 0 60px rgba(168, 85, 247, 0.6);
+                text-shadow: 
+                    0 0 40px rgba(6, 182, 212, 1),
+                    0 0 80px rgba(168, 85, 247, 0.8),
+                    0 0 120px rgba(139, 92, 246, 0.6);
             }
         }
         
         @keyframes dreamSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes dreamExplosion {
+            0% {
+                width: 10px;
+                height: 10px;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                width: 100px;
+                height: 100px;
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(3);
+            }
+            100% {
+                width: 200px;
+                height: 200px;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(5);
+            }
+        }
+        
+        @keyframes dreamRipple {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                width: 600px;
+                height: 600px;
+                opacity: 0;
+            }
         }
         
         @keyframes twinkle {
@@ -840,6 +921,12 @@
         <div class="dream-vortex" style="width: 200px; height: 200px;"></div>
         <div class="dream-vortex" style="animation-delay: 0.5s; width: 150px; height: 150px;"></div>
         <div class="dream-vortex" style="animation-delay: 1s; width: 100px; height: 100px;"></div>
+        <div class="dream-explosion" style="animation-delay: 0.3s;"></div>
+        <div class="dream-explosion" style="animation-delay: 0.8s;"></div>
+        <div class="dream-explosion" style="animation-delay: 1.3s;"></div>
+        <div class="dream-ripple" style="animation-delay: 0.2s;"></div>
+        <div class="dream-ripple" style="animation-delay: 1.2s;"></div>
+        <div class="dream-ripple" style="animation-delay: 2.2s;"></div>
         <div class="dream-text">
             <h2>墜入夢境深淵</h2>
             <p>AI 正在為您開啟心靈探索之門...</p>
@@ -1297,272 +1384,83 @@
             </div>
         </section>
         
-        <!-- 目標客群與痛點分析（初始隱藏） -->
-        <section class="text-center content-hidden" id="targetAudienceSection">
-            <h2 class="text-2xl md:text-6xl font-bold mb-8 glow-title">
-                精準定位<span class="dream-gradient-text">目標客群</span>
-            </h2>
-            <p class="text-base md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
-                深度分析用戶需求，提供雙軌產品策略滿足不同族群的心理健康需求
-            </p>
-            
-            <!-- 客群分析卡片 -->
-            <div class="grid md:grid-cols-2 gap-4 md:gap-8 mb-16">
-                <!-- 一般用戶客群 -->
-                <div class="glass-card p-4 md:p-8">
-                    <h3 class="text-xl md:text-2xl font-semibold mb-6 dream-gradient-text">🎯 一般用戶族群</h3>
-                    <div class="space-y-6 text-left">
-                        <div class="border-l-4 border-cyan-400 pl-4">
-                            <h4 class="font-semibold text-cyan-300 mb-2">自我探索追尋者</h4>
-                            <p class="text-slate-400 text-sm">
-                                大學生、職場人士、創意工作者等，對夢境、潛意識與個人成長充滿好奇，
-                                渴望透過科技深入了解內心世界。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-purple-400 pl-4">
-                            <h4 class="font-semibold text-purple-300 mb-2">心靈支持尋求者</h4>
-                            <p class="text-slate-400 text-sm">
-                                面臨情緒困擾、壓力、焦慮的現代人，期望獲得即時、私密且科學的
-                                心靈支持與情緒理解。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-yellow-400 pl-4">
-                            <h4 class="font-semibold text-yellow-300 mb-2">數位原住民</h4>
-                            <p class="text-slate-400 text-sm">
-                                習慣使用 APP、線上服務的年輕族群，願意嘗試新科技來改善
-                                生活與心理健康。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-400 pl-4">
-                            <h4 class="font-semibold text-green-300 mb-2">創傷經歷者</h4>
-                            <p class="text-slate-400 text-sm">
-                                經歷重大壓力、創傷或生活變動者，包括 PTSD 患者、
-                                疫情影響者等，需要情緒支持與壓力釋放。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 專業用戶客群 -->
-                <div class="glass-card p-4 md:p-8">
-                    <h3 class="text-xl md:text-2xl font-semibold mb-6 dream-gradient-text">🏥 專業醫療人員</h3>
-                    <div class="space-y-6 text-left">
-                        <div class="border-l-4 border-indigo-400 pl-4">
-                            <h4 class="font-semibold text-indigo-300 mb-2">臨床心理師</h4>
-                            <p class="text-slate-400 text-sm">
-                                需要創新 AI 工具來提升診療效率與個案洞察，
-                                協助快速篩檢與追蹤治療進展。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-pink-400 pl-4">
-                            <h4 class="font-semibold text-pink-300 mb-2">精神科醫師</h4>
-                            <p class="text-slate-400 text-sm">
-                                運用夢境分析輔助診斷，特別是 PTSD、焦慮症、憂鬱症等
-                                精神疾病的評估與治療。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-teal-400 pl-4">
-                            <h4 class="font-semibold text-teal-300 mb-2">諮商師與輔導人員</h4>
-                            <p class="text-slate-400 text-sm">
-                                學校輔導單位、心理諮商中心等，需要標準化工具
-                                協助個案管理與療效追蹤。
-                            </p>
-                        </div>
-                        
-                        <div class="border-l-4 border-orange-400 pl-4">
-                            <h4 class="font-semibold text-orange-300 mb-2">健康管理機構</h4>
-                            <p class="text-slate-400 text-sm">
-                                需進行大規模心理健康篩檢或追蹤的醫療院所、
-                                企業健康管理部門等。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 痛點解決方案 -->
-            <div class="glass-card p-8">
-                <h3 class="text-2xl font-semibold mb-8 dream-gradient-text">⚡ 核心痛點解決方案</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="text-center p-4 bg-red-900 bg-opacity-20 rounded-lg border border-red-400 border-opacity-30">
-                        <div class="text-3xl mb-3 heartbeat">🚨</div>
-                        <h4 class="font-semibold text-red-300 mb-2">資源稀缺</h4>
-                        <p class="text-slate-400 text-sm">
-                            心理諮商資源不足、等待時間長
-                            → AI 提供 24/7 即時支持與追蹤
-                        </p>
-                    </div>
-                    
-                    <div class="text-center p-4 bg-yellow-900 bg-opacity-20 rounded-lg border border-yellow-400 border-opacity-30">
-                        <div class="text-3xl mb-3">🔒</div>
-                        <h4 class="font-semibold text-yellow-300 mb-2">隱私顧慮</h4>
-                        <p class="text-slate-400 text-sm">
-                            對傳統治療有疑慮或隱私擔憂
-                            → 匿名化、高隱私的 AI 分析
-                        </p>
-                    </div>
-                    
-                    <div class="text-center p-4 bg-blue-900 bg-opacity-20 rounded-lg border border-blue-400 border-opacity-30">
-                        <div class="text-3xl mb-3">❓</div>
-                        <h4 class="font-semibold text-blue-300 mb-2">理解困難</h4>
-                        <p class="text-slate-400 text-sm">
-                            難以自我理解夢境與情緒關聯
-                            → 科學化解析與視覺化呈現
-                        </p>
-                    </div>
-                    
-                    <div class="text-center p-4 bg-green-900 bg-opacity-20 rounded-lg border border-green-400 border-opacity-30">
-                        <div class="text-3xl mb-3">⏰</div>
-                        <h4 class="font-semibold text-green-300 mb-2">即時需求</h4>
-                        <p class="text-slate-400 text-sm">
-                            情緒困擾無法即時獲得紓解
-                            → 即時 AI 陪伴與情緒支持
-                        </p>
-                    </div>
-                    
-                    <div class="text-center p-4 bg-purple-900 bg-opacity-20 rounded-lg border border-purple-400 border-opacity-30">
-                        <div class="text-3xl mb-3">📊</div>
-                        <h4 class="font-semibold text-purple-300 mb-2">追蹤管理</h4>
-                        <p class="text-slate-400 text-sm">
-                            缺乏長期追蹤與自我管理工具
-                            → 智能化長期情緒監測系統
-                        </p>
-                    </div>
-                    
-                    <div class="text-center p-4 bg-indigo-900 bg-opacity-20 rounded-lg border border-indigo-400 border-opacity-30">
-                        <div class="text-3xl mb-3">⚕️</div>
-                        <h4 class="font-semibold text-indigo-300 mb-2">專業效率</h4>
-                        <p class="text-slate-400 text-sm">
-                            傳統分析耗時、主觀性高
-                            → 標準化 AI 輔助診斷工具
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 科學基礎與關聯性（初始隱藏） -->
-        <section class="text-center content-hidden" id="scientificBasisSection">
+        <!-- 技術架構詳細說明 -->
+        <section class="text-center content-hidden" id="techSection">
             <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                <span class="dream-gradient-text">科學基礎</span>與關聯性
+                <span class="dream-gradient-text">核心AI</span>技術引擎
             </h2>
             <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
-                基於神經科學、心理學與臨床研究，將學術成果轉化為實用的心理健康工具
+                多模組AI架構深度解析夢境敘事，結合心理學理論與情感計算，
+                將潛意識訊息轉化為科學化的個人洞察與成長指引。
             </p>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-16">
-                <!-- 科學依據 -->
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl font-semibold mb-6 text-cyan-300">🔬 科學研究基礎</h3>
-                    <div class="space-y-4 text-left">
-                        <div class="flex items-start space-x-3">
-                            <span class="text-cyan-400 text-xl mt-1">●</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">神經科學支持</h4>
-                                <p class="text-slate-400 text-sm">
-                                    夢境活動與情緒處理、記憶整合的神經機制密切相關，
-                                    反映大腦的情緒狀態與心理壓力。
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-3">
-                            <span class="text-purple-400 text-xl mt-1">●</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">臨床心理學</h4>
-                                <p class="text-slate-400 text-sm">
-                                    夢境分析已被證實可反映 PTSD、焦慮症、憂鬱症等
-                                    精神疾病的症狀與治療進展。
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-3">
-                            <span class="text-yellow-400 text-xl mt-1">●</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">情感計算</h4>
-                                <p class="text-slate-400 text-sm">
-                                    運用自然語言處理與機器學習技術，
-                                    精確識別夢境敘事中的情緒模式與心理指標。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">自然語言處理引擎</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        基於大型語言模型，經夢境語料庫深度微調，
+                        精確解析夢境敘事結構、隱喻象徵與潛在意義。
+                    </p>
                 </div>
                 
-                <!-- 應用轉化 -->
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl font-semibold mb-6 text-purple-300">🎯 實用化轉化</h3>
-                    <div class="space-y-4 text-left">
-                        <div class="flex items-start space-x-3">
-                            <span class="text-green-400 text-xl mt-1">✓</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">個人版應用</h4>
-                                <p class="text-slate-400 text-sm">
-                                    將學術研究轉化為易懂的互動體驗，提供個人化的
-                                    情緒洞察與自我照顧建議。
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-3">
-                            <span class="text-blue-400 text-xl mt-1">✓</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">專業版工具</h4>
-                                <p class="text-slate-400 text-sm">
-                                    提供結構化分析報告、長期追蹤與臨床決策支援，
-                                    提升專業人員的診療效率。
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-3">
-                            <span class="text-indigo-400 text-xl mt-1">✓</span>
-                            <div>
-                                <h4 class="font-semibold text-slate-300 mb-1">倫理與安全</h4>
-                                <p class="text-slate-400 text-sm">
-                                    明確標示產品界限，強調非醫療診斷工具，
-                                    引導用戶適時尋求專業協助。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">💫</div>
+                    <h3 class="text-xl font-semibold mb-3 text-purple-300">多維情感分析系統</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        建構夢境情感向量空間，運用注意力機制識別
+                        32種細緻情緒狀態，追蹤情感流動軌跡。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-semibold mb-3 text-indigo-300">心理關聯模型</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        基於臨床夢境分析系統與現代心理學理論，
+                        建立夢境特徵與心理指標的深度學習預測模型。
+                    </p>
                 </div>
             </div>
             
-            <!-- 重要聲明 -->
-            <div class="glass-card p-8 border-2 border-yellow-400 border-opacity-50">
-                <h3 class="text-xl font-semibold mb-4 text-yellow-300">⚠️ 重要聲明與使用指引</h3>
-                <div class="grid md:grid-cols-2 gap-6 text-left">
-                    <div>
-                        <h4 class="font-semibold text-slate-300 mb-3">🏠 個人版使用者</h4>
-                        <ul class="space-y-2 text-slate-400 text-sm">
-                            <li>• 本產品為自我探索與心理健康輔助工具</li>
-                            <li>• 非醫療診斷工具，不可取代專業醫療</li>
-                            <li>• 如有嚴重情緒困擾，請立即尋求專業協助</li>
-                            <li>• 提供專業資源連結與緊急聯絡資訊</li>
-                        </ul>
+            <!-- 技術整合圖表 -->
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-semibold mb-6 dream-gradient-text">🔄 技術模組整合架構</h3>
+                <p class="text-slate-300 mb-8 text-center leading-relaxed">
+                    微服務架構實現模組間無縫協作，從多模態數據獲取到個性化洞察輸出，
+                    提供全方位的夢境智能分析服務。
+                </p>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">📝</div>
+                        <h4 class="font-semibold text-cyan-300 mb-2">數據輸入層</h4>
+                        <p class="text-xs text-slate-400">語音識別<br/>文字處理<br/>多媒體整合</p>
                     </div>
-                    <div>
-                        <h4 class="font-semibold text-slate-300 mb-3">🏥 專業版使用者</h4>
-                        <ul class="space-y-2 text-slate-400 text-sm">
-                            <li>• AI 分析結果僅供臨床參考</li>
-                            <li>• 最終診斷與治療決策由專業人員執行</li>
-                            <li>• 支援整合多源數據提升診斷精度</li>
-                            <li>• 遵循醫療倫理與隱私保護規範</li>
-                        </ul>
+                    
+                    <div class="tech-flow active">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h4 class="font-semibold mb-2">AI分析引擎</h4>
+                        <p class="text-xs">NLP處理<br/>情感分析<br/>心理建模</p>
+                    </div>
+                    
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <h4 class="font-semibold text-purple-300 mb-2">洞察生成</h4>
+                        <p class="text-xs text-slate-400">模式識別<br/>趨勢分析<br/>預測建議</p>
+                    </div>
+                    
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-semibold text-indigo-300 mb-2">視覺化輸出</h4>
+                        <p class="text-xs text-slate-400">互動報告<br/>圖表呈現<br/>個人儀表板</p>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- 市場洞察區域（初始隱藏） -->
-        <section class="text-center content-hidden" id="marketInsightSection">
+        <!-- 市場洞察區域 -->
+        <section class="text-center content-hidden" id="marketSection">
             <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
                 市場洞察與<span class="dream-gradient-text">無限潛力</span>
             </h2>
@@ -1629,27 +1527,35 @@
     </footer>
 
     <script>
-        // 修正夢境過渡動畫函數 - 添加下墜感覺和內容控制
+        // 修正夢境過渡動畫函數 - 添加絢麗炫炮效果
         function startDreamJourney() {
             const transition = document.getElementById('dreamTransition');
             const particlesContainer = document.getElementById('dreamParticles');
             
-            // 創建下墜粒子效果
-            for (let i = 0; i < 80; i++) {
+            // 創建絢麗夢境粒子
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'dream-particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = '-10px';
-                particle.style.animationDelay = Math.random() * 2 + 's';
-                particle.style.animationDuration = (2 + Math.random() * 3) + 's';
+                particle.style.animationDelay = Math.random() * 4 + 's';
+                particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+                
+                // 隨機顏色變化
+                const colors = [
+                    'linear-gradient(45deg, #ffffff, #8B5CF6, #06B6D4)',
+                    'linear-gradient(45deg, #A855F7, #6366F1, #8B5CF6)',
+                    'linear-gradient(45deg, #06B6D4, #8B5CF6, #A855F7)'
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
                 particlesContainer.appendChild(particle);
             }
             
-            // 啟動下墜過渡動畫
-            transition.style.transform = 'translateY(-100vh)';
+            // 啟動夢境過渡動畫
             transition.classList.add('active');
             
-            // 5秒後關閉動畫並顯示內容
+            // 6秒後關閉動畫並顯示內容
             setTimeout(() => {
                 transition.classList.remove('active');
                 
@@ -1678,7 +1584,7 @@
                 setTimeout(() => {
                     particlesContainer.innerHTML = '';
                 }, 1000);
-            }, 5000);
+            }, 6000);
         }
         
         // 緊急求助彈窗控制
@@ -1698,7 +1604,7 @@
             }
         }
         
-        // 修正Demo互動邏輯
+        // Demo互動邏輯
         function startPersonalDemo() {
             const typingText = document.getElementById('typingText');
             const originalText = typingText.textContent;
@@ -1768,7 +1674,20 @@
             }, 3000);
         }
         
-        // 添加互動效果和動畫控制
+        // 技術流程動畫
+        function animateTechFlow() {
+            const flows = document.querySelectorAll('.tech-flow');
+            flows.forEach((flow, index) => {
+                setTimeout(() => {
+                    flow.classList.add('active');
+                    setTimeout(() => {
+                        flow.classList.remove('active');
+                    }, 1000);
+                }, index * 500);
+            });
+        }
+        
+        // 初始化所有功能
         document.addEventListener('DOMContentLoaded', function() {
             // 初始隱藏所有內容區域
             const contentSections = document.querySelectorAll('.content-hidden');
@@ -1820,6 +1739,9 @@
                     closeEmergencyModal();
                 }
             });
+            
+            // 定期執行技術流程動畫
+            setInterval(animateTechFlow, 5000);
         });
     </script>
 </body>
