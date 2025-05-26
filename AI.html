@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 夢境心語 - 探索內心宇宙的智能夥伴</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dream-primary: #6366F1;
+            --dream-secondary: #8B5CF6;
+            --dream-accent: #06B6D4;
+            --dream-glow: #A855F7;
+            --dream-dark: #0F0B1F;
+            --dream-darker: #070518;
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0b1f 50%, #070518 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 動態星空背景a */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(139,92,246,0.4), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(99,102,241,0.3), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(6,182,212,0.2), transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.2), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: twinkle 8s infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* 按鈕周圍下墜動畫效果 - 新增炫炮效果 */
+        .button-fall-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .fall-particle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #8B5CF6, #06B6D4, #A855F7);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 30px rgba(139, 92, 246, 1),
+                0 0 60px rgba(6, 182, 212, 0.8),
+                0 0 90px rgba(168, 85, 247, 0.6);
+            animation: buttonFallDown 2.5s ease-in forwards;
+        }
+        
+        .fall-particle:nth-child(odd) {
+            background: linear-gradient(45deg, #06B6D4, #8B5CF6, #6366F1);
+            animation-duration: 2.8s;
+            box-shadow: 
+                0 0 25px rgba(6, 182, 212, 1),
+                0 0 50px rgba(139, 92, 246, 0.8),
+                0 0 75px rgba(99, 102, 241, 0.6);
+        }
+        
+        .fall-particle:nth-child(3n) {
+            background: linear-gradient(45deg, #A855F7, #6366F1, #8B5CF6);
+            animation-duration: 2.2s;
+            box-shadow: 
+                0 0 35px rgba(168, 85, 247, 1),
+                0 0 70px rgba(99, 102, 241, 0.8),
+                0 0 105px rgba(139, 92, 246, 0.6);
+        }
+        
+        .fall-streak {
+            position: absolute;
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, 
+                rgba(139, 92, 246, 1) 0%,
+                rgba(139, 92, 246, 0.9) 20%,
+                rgba(6, 182, 212, 0.7) 50%,
+                rgba(168, 85, 247, 0.5) 80%,
+                rgba(139, 92, 246, 0) 100%);
+            border-radius: 2px;
+            animation: streakFall 2s ease-in forwards;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
+        }
+        
+        .fall-glow {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, 
+                rgba(168, 85, 247, 1) 0%,
+                rgba(139, 92, 246, 0.8) 20%,
+                rgba(6, 182, 212, 0.6) 40%,
+                rgba(99, 102, 241, 0.4) 60%,
+                transparent 100%);
+            border-radius: 50%;
+            animation: glowFall 2.5s ease-in forwards;
+            box-shadow: 
+                0 0 40px rgba(168, 85, 247, 0.9),
+                0 0 80px rgba(139, 92, 246, 0.7);
+        }
+        
+        .fall-explosion {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(45deg, #ffffff, #8B5CF6, #06B6D4);
+            border-radius: 50%;
+            animation: explosionFall 1.8s ease-out forwards;
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 1),
+                0 0 40px rgba(139, 92, 246, 0.8);
+        }
+        
+        @keyframes buttonFallDown {
+            0% {
+                transform: translateY(-30px) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            15% {
+                transform: translateY(10px) scale(1.3) rotate(45deg);
+                opacity: 1;
+            }
+            35% {
+                transform: translateY(100px) scale(1.1) rotate(180deg);
+                opacity: 0.9;
+            }
+            65% {
+                transform: translateY(300px) scale(0.8) rotate(315deg);
+                opacity: 0.7;
+            }
+            85% {
+                transform: translateY(500px) scale(0.5) rotate(450deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(700px) scale(0.2) rotate(540deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes streakFall {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+                height: 40px;
+            }
+            30% {
+                opacity: 1;
+                height: 60px;
+            }
+            70% {
+                opacity: 0.8;
+                height: 45px;
+            }
+            100% {
+                transform: translateY(600px);
+                opacity: 0;
+                height: 20px;
+            }
+        }
+        
+        @keyframes glowFall {
+            0% {
+                transform: translateY(-25px) scale(0.5);
+                opacity: 1;
+            }
+            20% {
+                transform: translateY(30px) scale(1.8);
+                opacity: 0.95;
+            }
+            50% {
+                transform: translateY(200px) scale(1.3);
+                opacity: 0.8;
+            }
+            80% {
+                transform: translateY(450px) scale(0.9);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(650px) scale(0.3);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes explosionFall {
+            0% {
+                transform: translateY(-20px) scale(0.3);
+                opacity: 1;
+            }
+            25% {
+                transform: translateY(50px) scale(1.5);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(200px) scale(1.2);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translateY(400px) scale(0.8);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(600px) scale(0.1);
+                opacity: 0;
+            }
+        }
+        
+        /* 夢境過渡動畫 */
+        .dream-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, 
+                rgba(139, 92, 246, 0.95) 0%, 
+                rgba(99, 102, 241, 0.9) 30%, 
+                rgba(6, 182, 212, 0.8) 60%, 
+                rgba(168, 85, 247, 0.95) 100%);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease-out;
+            backdrop-filter: blur(0px);
+            transform: translateY(-100vh);
+        }
+        
+        .dream-transition.active {
+            opacity: 1;
+            visibility: visible;
+            backdrop-filter: blur(30px);
+            transform: translateY(0);
+            transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .dream-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .dream-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: dreamFall 3s linear infinite;
+        }
+        
+        .dream-vortex {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: dreamVortex 3s ease-out infinite;
+        }
+        
+        .dream-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            animation: dreamTextFall 2s ease-out 0.5s forwards;
+        }
+        
+        .dream-text h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #06B6D4, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: dreamGlow 2s ease-in-out infinite alternate;
+        }
+        
+        .dream-text p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+        
+        .dream-loading {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: dreamSpin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        /* 隱藏Demo和介紹內容 */
+        .content-hidden {
+            display: none !important;
+        }
+        
+        /* 下墜動畫效果 */
+        @keyframes dreamFall {
+            0% { 
+                transform: translateY(-100vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% { 
+                opacity: 1;
+            }
+            80% { 
+                opacity: 1;
+                transform: translateY(80vh) scale(1.2) rotate(180deg);
+            }
+            100% { 
+                transform: translateY(120vh) scale(0.3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes dreamVortex {
+            0% {
+                width: 50px;
+                height: 50px;
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(180deg);
+            }
+            70% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(2) rotate(540deg);
+            }
+            100% {
+                width: 400px;
+                height: 400px;
+                transform: translate(-50%, -50%) scale(3) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes dreamTextFall {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -300%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes dreamGlow {
+            0% {
+                text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 40px rgba(6, 182, 212, 0.8), 0 0 60px rgba(168, 85, 247, 0.6);
+            }
+        }
+        
+        @keyframes dreamSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.6); }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: #06B6D4; }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes progressBar {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes dataFlow {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @keyframes emergencyPulse {
+            0%, 100% { 
+                background: rgba(239, 68, 68, 0.1);
+                border-color: rgba(239, 68, 68, 0.3);
+                box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+            }
+            50% { 
+                background: rgba(239, 68, 68, 0.2);
+                border-color: rgba(239, 68, 68, 0.6);
+                box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+            }
+        }
+        
+        @keyframes professionalGlow {
+            0%, 100% { 
+                background: rgba(99, 102, 241, 0.1);
+                border-color: rgba(99, 102, 241, 0.3);
+                box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+            }
+            50% { 
+                background: rgba(99, 102, 241, 0.2);
+                border-color: rgba(99, 102, 241, 0.6);
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 夢幻漸變文字 */
+        .dream-gradient-text {
+            background: linear-gradient(135deg, #06B6D4, #8B5CF6, #6366F1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 玻璃擬態卡片 */
+        .glass-card {
+            background: rgba(15, 11, 31, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .glass-card:hover::before {
+            left: 100%;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(139, 92, 246, 0.2);
+        }
+        
+        /* Demo 畫面樣式 - 修正手機響應式 */
+        .demo-screen {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            width: 100%;
+        }
+        
+        .demo-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(135deg, #374151, #1f2937);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .demo-content {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+            width: 100%;
+        }
+        
+        .demo-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .demo-content::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 2px;
+        }
+        
+        .demo-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 2px;
+        }
+        
+        /* 修正聊天泡泡響應式 */
+        .chat-bubble {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 15px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            max-width: 90%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* AI回覆在左邊 */
+        .chat-bubble.ai {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            margin-right: auto;
+            margin-left: 0;
+            animation: slideInLeft 0.8s ease forwards;
+        }
+        
+        /* 用戶訊息在右邊 */
+        .chat-bubble.user {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.3);
+            margin-left: auto;
+            margin-right: 0;
+            animation: slideInRight 0.8s ease forwards;
+        }
+        
+        .chat-bubble.emergency {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            animation: emergencyPulse 2s infinite, slideInLeft 0.8s ease forwards;
+            margin-right: auto;
+            margin-left: 0;
+        }
+        
+        .chat-bubble.professional {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            animation: professionalGlow 3s infinite, slideInLeft 0.8s ease forwards;
+            margin-right: auto;
+            margin-left: 0;
+        }
+        
+        /* 隱藏元素 - 用於控制顯示順序 */
+        .hidden-initially {
+            display: none;
+        }
+        
+        /* 專業操作按鈕 */
+        .professional-action {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.2rem;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+        
+        .professional-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* 緊急求助彈窗樣式 */
+        .emergency-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .emergency-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .emergency-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 20px;
+            padding: 1.5rem;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            animation: emergencyPulse 2s infinite;
+        }
+        
+        .emergency-phone-button {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin: 0.4rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            font-size: 0.875rem;
+        }
+        
+        .emergency-phone-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
+        }
+        
+        /* 追蹤相關樣式 */
+        .tracking-dashboard {
+            background: rgba(15, 11, 31, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.75rem 0;
+        }
+        
+        .metric-card {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            background: rgba(6, 182, 212, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .timeline-item {
+            border-left: 2px solid rgba(139, 92, 246, 0.3);
+            padding-left: 0.75rem;
+            margin: 0.75rem 0;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 8px;
+            height: 8px;
+            background: #8B5CF6;
+            border-radius: 50%;
+        }
+        
+        /* 打字動畫效果 */
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #06B6D4;
+            white-space: nowrap;
+            animation: typing 4s steps(60, end), blink 1s infinite;
+        }
+        
+        /* 進度條動畫 */
+        .progress-bar {
+            background: rgba(6, 182, 212, 0.2);
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06B6D4, #8B5CF6);
+            border-radius: 2px;
+            animation: progressBar 3s ease-in-out;
+        }
+        
+        /* 心跳動畫 */
+        .heartbeat {
+            animation: heartbeat 2s infinite;
+        }
+        
+        /* 其他原有樣式保持不變 */
+        .floating-stat {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: float 4s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .floating-stat:nth-child(2) { animation-delay: -1s; }
+        .floating-stat:nth-child(3) { animation-delay: -2s; }
+        
+        .floating-stat:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            animation: pulse-glow 2s infinite;
+        }
+        
+        .neon-button {
+            background: linear-gradient(135deg, var(--dream-primary), var(--dream-secondary));
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .neon-button:hover::before {
+            left: 100%;
+        }
+        
+        .neon-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.6);
+        }
+        
+        /* 按鈕點擊動畫 */
+        .neon-button:active {
+            transform: translateY(0px) scale(0.95);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+        }
+        
+        .tech-flow {
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tech-flow.active {
+            background: linear-gradient(135deg, var(--dream-accent), var(--dream-primary));
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);
+        }
+        
+        .tech-arrow {
+            color: var(--dream-accent);
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .advantage-icon {
+            font-size: 2.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .glass-card:hover .advantage-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .glow-title {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 版權聲明樣式 */
+        .copyright-footer {
+            background: rgba(15, 11, 31, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        /* 手機響應式優化 */
+        @media (max-width: 768px) {
+            .dream-text h2 {
+                font-size: 2rem;
+            }
+            
+            .dream-text p {
+                font-size: 1rem;
+            }
+            
+            .dream-gradient-text {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .glass-card {
+                margin: 0.5rem;
+                padding: 1rem;
+            }
+            
+            .floating-stat {
+                padding: 1.5rem;
+            }
+            
+            .demo-screen {
+                padding: 1rem;
+                min-height: 400px;
+            }
+            
+            .demo-content {
+                max-height: 350px;
+                padding-right: 3px;
+            }
+            
+            .emergency-content {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+            
+            .chat-bubble {
+                max-width: 95%;
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+            
+            .professional-action {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.7rem;
+                margin: 0.1rem;
+            }
+            
+            .tracking-dashboard {
+                padding: 0.75rem;
+            }
+            
+            .metric-card {
+                padding: 0.5rem;
+            }
+            
+            .emergency-phone-button {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            /* 修正手機版標題 */
+            h1 {
+                font-size: 3rem !important;
+            }
+            
+            h2 {
+                font-size: 2rem !important;
+            }
+            
+            h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            .fall-particle {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .fall-glow {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .demo-screen {
+                padding: 0.75rem;
+                min-height: 350px;
+            }
+            
+            .demo-content {
+                max-height: 300px;
+            }
+            
+            .chat-bubble {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- 夢境過渡動畫 -->
+    <div id="dreamTransition" class="dream-transition">
+        <div class="dream-particles" id="dreamParticles"></div>
+        <div class="dream-vortex" style="width: 200px; height: 200px;"></div>
+        <div class="dream-vortex" style="animation-delay: 0.5s; width: 150px; height: 150px;"></div>
+        <div class="dream-vortex" style="animation-delay: 1s; width: 100px; height: 100px;"></div>
+        <div class="dream-text">
+            <h2>墜入夢境深淵</h2>
+            <p>AI 正在為您開啟心靈探索之門...</p>
+            <div class="dream-loading"></div>
+        </div>
+    </div>
+
+    <!-- 緊急求助彈窗 -->
+    <div id="emergencyModal" class="emergency-modal">
+        <div class="emergency-content">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-4 heartbeat">🚨</div>
+                <h3 class="text-xl font-bold text-red-400 mb-2">緊急心理支援</h3>
+                <p class="text-slate-300 text-sm">
+                    AI 檢測到您可能需要立即的專業協助，以下是免費的心理支援熱線：
+                </p>
+            </div>
+            
+            <div class="space-y-2 mb-6">
+                <button class="emergency-phone-button" onclick="makeCall('1980')">
+                    <div>
+                        <div class="font-bold">張老師專線</div>
+                        <div class="text-xs opacity-80">24小時免費心理諮詢</div>
+                    </div>
+                    <div class="text-lg">📞 1980</div>
+                </button>
+                
+                <button class="emergency-phone-button" onclick="makeCall('1995')">
+                    <div>
+                        <div class="font-bold">生命線協會</div>
+                        <div class="text-xs opacity-80">24小時生命關懷熱線</div>
+                    </div>
+                    <div class="text-lg">📞 1995</div>
+                </button>
+                
+                <button class="emergency-phone-button" onclick="makeCall('1925')">
+                    <div>
+                        <div class="font-bold">安心專線</div>
+                        <div class="text-xs opacity-80">24小時免費心理諮詢</div>
+                    </div>
+                    <div class="text-lg">📞 1925</div>
+                </button>
+                
+                <button class="emergency-phone-button" onclick="makeCall('113')">
+                    <div>
+                        <div class="font-bold">婦幼保護專線</div>
+                        <div class="text-xs opacity-80">家暴、性侵害、兒少保護</div>
+                    </div>
+                    <div class="text-lg">📞 113</div>
+                </button>
+            </div>
+            
+            <div class="text-center">
+                <button onclick="closeEmergencyModal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                    我已了解，稍後再說
+                </button>
+            </div>
+            
+            <div class="mt-4 p-2 bg-yellow-900 bg-opacity-30 rounded-lg">
+                <p class="text-xs text-yellow-300 text-center">
+                    ⚠️ 如果您有立即的生命危險，請直接撥打 119 或前往最近的急診室
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主標題區域 -->
+    <header class="relative py-20 text-center overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-4xl md:text-8xl font-bold mb-6 dream-gradient-text glow-title">
+                AI 夢境心語
+            </h1>
+            <p class="text-lg md:text-3xl mb-4 text-slate-300 font-light">
+                探索內心宇宙的智能夥伴
+            </p>
+            <p class="text-base md:text-lg text-slate-400 mb-8 max-w-3xl mx-auto">
+                結合前瞻AI技術與深度心理學洞察，為您提供科學化的夢境解析與個人化心靈導航
+            </p>
+            <div class="inline-block relative">
+                <button class="neon-button" onclick="startDreamJourney()" id="dreamButton">
+                    開始夢境探索之旅
+                </button>
+                <!-- 按鈕周圍下墜動畫容器 -->
+                <div id="buttonFallContainer" class="button-fall-container"></div>
+            </div>
+        </div>
+        
+        <!-- 裝飾性元素 -->
+        <div class="absolute top-1/2 left-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div class="absolute top-1/3 right-1/4 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-6 py-12 space-y-20">
+        
+        <!-- 產品 Demo 展示區域（初始隱藏） -->
+        <section class="text-center content-hidden" id="demoSection">
+            <h2 class="text-2xl md:text-6xl font-bold mb-8 glow-title">
+                <span class="dream-gradient-text">產品體驗</span>Demo 展示
+            </h2>
+            <p class="text-base md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
+                體驗 AI 夢境心語如何將您的夢境轉化為深度心理洞察，並提供長期追蹤與個人成長指引
+            </p>
+            
+            <!-- Demo 畫面展示 -->
+            <div class="grid md:grid-cols-2 gap-4 md:gap-8 mb-16">
+                <!-- 一般用戶版 Demo -->
+                <div class="glass-card p-4 md:p-6">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-6 text-cyan-300 heartbeat">🌙 個人版體驗</h3>
+                    <div class="demo-screen">
+                        <div class="demo-content" id="personalDemo">
+                            <!-- 步驟1: 用戶輸入 -->
+                            <div class="chat-bubble user" id="userInput">
+                                <p class="text-sm text-slate-300">
+                                    <strong>用戶：</strong><span id="typingText">最近常夢到自己被困在黑暗的房間裡，找不到出口，感覺很絕望...</span>
+                                </p>
+                            </div>
+                            
+                            <!-- 步驟2: AI開始分析 -->
+                            <div class="chat-bubble ai hidden-initially" id="aiAnalyzing">
+                                <p class="text-sm text-slate-300 mb-3">
+                                    <strong>AI 深度分析中...</strong>
+                                </p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟3: AI分析結果 -->
+                            <div class="chat-bubble ai hidden-initially" id="aiAnalysis">
+                                <p class="text-sm text-slate-300 mb-3">
+                                    <strong>🔍 AI 分析：</strong>您的夢境顯示了以下心理狀態：
+                                </p>
+                                <div class="text-xs text-slate-400 space-y-2">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 bg-red-400 rounded-full heartbeat"></span>
+                                        <span>憂鬱指數：85% (嚴重)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 bg-red-400 rounded-full heartbeat"></span>
+                                        <span>焦慮指數：90% (極高)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 bg-red-400 rounded-full heartbeat"></span>
+                                        <span>絕望感：95% (危險)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                                        <span>主題：困頓、無助、尋求出路</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟4: 緊急評估 -->
+                            <div class="chat-bubble ai emergency hidden-initially" id="emergencyAssessment">
+                                <p class="text-sm text-red-300 mb-3">
+                                    <strong>⚠️ AI 緊急評估：</strong>
+                                </p>
+                                <div class="bg-red-900 bg-opacity-30 p-3 rounded-lg mb-3">
+                                    <p class="text-sm text-red-200">
+                                        檢測到您的心理狀態可能需要立即專業協助。您的夢境反映出嚴重的情緒困擾，
+                                        建議您立即聯繫專業心理健康服務。
+                                    </p>
+                                </div>
+                                <button onclick="showEmergencyModal()" class="w-full bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg transition-colors font-semibold text-sm">
+                                    🚨 立即獲取專業協助
+                                </button>
+                            </div>
+                            
+                            <!-- 步驟5: 追蹤洞察 -->
+                            <div class="chat-bubble ai hidden-initially" id="trackingInsights">
+                                <p class="text-sm text-slate-300 mb-3">
+                                    <strong>📊 追蹤洞察：</strong>
+                                </p>
+                                <div class="tracking-dashboard">
+                                    <div class="text-xs text-slate-400 mb-2">30天追蹤趨勢</div>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div class="metric-card">
+                                            <div class="text-xs text-red-300">憂鬱頻率</div>
+                                            <div class="text-sm font-bold">↑ 65%</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="text-xs text-red-300">睡眠品質</div>
+                                            <div class="text-sm font-bold">3.1/10</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="text-xs text-red-300">風險指數</div>
+                                            <div class="text-sm font-bold">高風險</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟6: 最終建議 -->
+                            <div class="chat-bubble ai hidden-initially" id="finalAdvice">
+                                <p class="text-sm text-slate-300">
+                                    <strong>🎯 緊急建議：</strong><br/>
+                                    您的情況需要立即專業協助。請不要獨自承受這些痛苦，
+                                    專業的心理健康服務可以為您提供有效的支持和治療。
+                                    系統已為您準備了24小時免費諮詢熱線。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs md:text-sm text-slate-400">
+                        ✨ 24/7 即時分析 • 🔒 隱私保護 • 📈 長期追蹤 • 🚨 緊急評估 • 🧠 科學依據
+                    </div>
+                </div>
+                
+                <!-- 專業版 Demo -->
+                <div class="glass-card p-4 md:p-6">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-6 text-purple-300 heartbeat">🏥 專業版介面 <span class="text-xs md:text-sm text-slate-400">（醫師/心理師專用）</span></h3>
+                    <div class="demo-screen">
+                        <div class="demo-content" id="professionalDemo">
+                            <!-- 步驟1: 登入資訊 -->
+                            <div class="text-sm text-slate-300 mb-4" id="loginInfo">
+                                <strong>操作者：</strong>王醫師（精神科） | <strong>個案 ID：</strong> P001 | <strong>追蹤期間：</strong> 90天
+                            </div>
+                            
+                            <!-- 步驟2: 專業操作介面 -->
+                            <div class="chat-bubble professional" id="professionalInterface">
+                                <p class="text-sm text-indigo-300 mb-3">
+                                    <strong>🩺 專業操作介面：</strong>
+                                </p>
+                                <div class="grid grid-cols-2 gap-1 md:gap-2 mb-3">
+                                    <button class="professional-action" onclick="alert('查看完整病歷')">查看病歷</button>
+                                    <button class="professional-action" onclick="alert('更新診斷')">更新診斷</button>
+                                    <button class="professional-action" onclick="alert('調整用藥')">調整用藥</button>
+                                    <button class="professional-action" onclick="alert('安排會談')">安排會談</button>
+                                </div>
+                                <p class="text-xs text-indigo-200">
+                                    專業人員可即時操作個案管理、診斷更新、治療計畫調整等功能
+                                </p>
+                            </div>
+                            
+                            <!-- 步驟3: AI分析報告 -->
+                            <div class="chat-bubble ai hidden-initially" id="professionalAnalysis">
+                                <p class="text-sm text-slate-300 mb-3">
+                                    <strong>🤖 AI專業分析報告：</strong>
+                                </p>
+                                <div class="text-xs text-slate-400 space-y-2">
+                                    <div><strong>DSM-5診斷建議：</strong> 重度憂鬱症 (296.23)</div>
+                                    <div><strong>GAF評分：</strong> 35 (嚴重功能損害)</div>
+                                    <div><strong>自傷風險：</strong> 高度 (Columbia Scale: 6/6)</div>
+                                    <div><strong>治療建議：</strong> 立即住院評估 + 藥物治療</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟4: 緊急警示 -->
+                            <div class="bg-red-900 bg-opacity-30 border border-red-400 rounded-lg p-3 mb-4 hidden-initially" id="professionalAlert">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-red-400 text-lg heartbeat">🚨</span>
+                                    <span class="text-red-300 font-semibold text-sm">AI緊急警示 - 需立即醫師介入</span>
+                                </div>
+                                <p class="text-xs text-red-200 mb-2">
+                                    AI評估顯示個案存在高度自傷風險，建議立即進行危機介入評估
+                                </p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="professional-action bg-red-600" onclick="alert('啟動危機介入')">啟動危機介入</button>
+                                    <button class="professional-action bg-orange-600" onclick="alert('通知團隊')">通知醫療團隊</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟5: 追蹤時間軸 -->
+                            <div class="tracking-dashboard mb-4 hidden-initially" id="professionalTimeline">
+                                <div class="text-sm text-slate-300 mb-3">
+                                    <strong>📈 專業追蹤時間軸</strong>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="timeline-item">
+                                        <div class="text-xs text-slate-400">第1-30天：初診評估 (王醫師)</div>
+                                        <div class="text-xs text-yellow-300">輕度憂鬱症狀 PHQ-9: 12分</div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="text-xs text-slate-400">第31-60天：藥物治療期 (調整劑量)</div>
+                                        <div class="text-xs text-orange-300">中度憂鬱症狀 PHQ-9: 18分</div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="text-xs text-slate-400">第61-90天：症狀惡化期 (需住院評估)</div>
+                                        <div class="text-xs text-red-300">重度憂鬱症狀 PHQ-9: 24分</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 步驟6: 臨床決策支援 -->
+                            <div class="chat-bubble professional hidden-initially" id="clinicalSupport">
+                                <p class="text-sm text-indigo-300 mb-3">
+                                    <strong>⚕️ 臨床決策支援系統：</strong>
+                                </p>
+                                <div class="space-y-2">
+                                    <div class="text-xs text-slate-300">
+                                        <strong>建議處置：</strong>
+                                        <div class="mt-1 space-y-1">
+                                            <div>1. 立即安排精神科急診評估</div>
+                                            <div>2. 考慮短期住院治療 (3-7天)</div>
+                                            <div>3. 調整抗憂鬱藥物劑量</div>
+                                            <div>4. 安排家屬會談與衛教</div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 mt-3">
+                                        <button class="professional-action" onclick="alert('生成轉診單')">生成轉診單</button>
+                                        <button class="professional-action" onclick="alert('預約床位')">預約住院床位</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs md:text-sm text-slate-400">
+                        🩺 專業醫療工具 • 📊 結構化報告 • 📈 長期追蹤 • 🔮 預測分析 • 🚨 風險預警 • ⚕️ 臨床決策支援
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 用戶追蹤系統詳細說明（初始隱藏） -->
+        <section class="text-center content-hidden" id="trackingSection">
+            <h2 class="text-2xl md:text-6xl font-bold mb-8 glow-title">
+                <span class="dream-gradient-text">智能追蹤</span>系統
+            </h2>
+            <p class="text-base md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
+                建立個人專屬的心理健康檔案，透過AI持續學習與優化，提供精準的成長軌跡追蹤與預測分析
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-4 md:gap-8 mb-16">
+                <!-- 個人版追蹤功能 -->
+                <div class="glass-card p-4 md:p-8">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-6 text-cyan-300">🏠 個人版追蹤功能</h3>
+                    <div class="space-y-6 text-left">
+                        <div class="border-l-4 border-cyan-400 pl-4">
+                            <h4 class="font-semibold text-cyan-300 mb-2">📖 夢境日記系統</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                連續記錄與分析夢境內
+                            <p class="text-slate-400 text-sm mb-2">
+                                連續記錄與分析夢境內容，建立個人夢境資料庫，
+                                追蹤夢境主題演變與情緒變化軌跡。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 語音/文字輸入支援 • 自動主題標籤 • 情緒趨勢圖表
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-400 pl-4">
+                            <h4 class="font-semibold text-purple-300 mb-2">📊 心理健康儀表板</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                整合睡眠品質、情緒指標、壓力水平等多維度數據，
+                                提供視覺化的個人心理健康全景。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 週/月/年度報告 • 個人化建議 • 目標設定與追蹤
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-yellow-400 pl-4">
+                            <h4 class="font-semibold text-yellow-300 mb-2">🎯 成長里程碑</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                設定個人成長目標，追蹤達成進度，
+                                慶祝每個心理健康改善的重要時刻。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 自定義目標 • 進度提醒 • 成就徽章系統
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-4">
+                            <h4 class="font-semibold text-red-300 mb-2">🚨 智能預警系統</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                AI監測異常夢境模式與情緒波動，
+                                及早發現潛在心理健康風險並自動提供緊急支援資源。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 風險評估 • 即時預警 • 緊急求助熱線 • 專業資源推薦
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 專業版追蹤功能 -->
+                <div class="glass-card p-4 md:p-8">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-6 text-purple-300">🏥 專業版追蹤功能 <span class="text-xs md:text-sm text-slate-400">（醫師/心理師專用）</span></h3>
+                    <div class="space-y-6 text-left">
+                        <div class="border-l-4 border-indigo-400 pl-4">
+                            <h4 class="font-semibold text-indigo-300 mb-2">📋 個案管理系統</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                完整的個案追蹤檔案，整合夢境分析、治療進展、
+                                用藥記錄等多元數據，支援醫療團隊協作。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 多專業協作 • 權限管理 • 醫療資料加密保護 • 病歷整合
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-pink-400 pl-4">
+                            <h4 class="font-semibold text-pink-300 mb-2">🔮 AI預測分析模型</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                運用機器學習預測治療效果、復發風險、
+                                最佳治療時機，輔助醫師臨床決策制定。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 風險預測 • 療效評估 • 治療建議 • 用藥指引
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-teal-400 pl-4">
+                            <h4 class="font-semibold text-teal-300 mb-2">📈 療效追蹤報告</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                自動生成標準化療效評估報告，
+                                支援醫學研究數據收集與臨床證據建立。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 標準化量表 • 統計分析 • 研究支援 • 論文數據
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-4">
+                            <h4 class="font-semibold text-red-300 mb-2">🚨 危機預警系統</h4>
+                            <p class="text-slate-400 text-sm mb-2">
+                                即時監測高風險個案，自動觸發危機介入程序，
+                                通知相關醫療團隊並啟動緊急應對機制。
+                            </p>
+                            <div class="text-xs text-slate-500">
+                                • 自動警報 • 危機介入 • 醫療團隊通知 • 緊急聯絡 • 住院評估
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 追蹤數據隱私保護 -->
+            <div class="glass-card p-4 md:p-8 border-2 border-green-400 border-opacity-50">
+                <h3 class="text-lg md:text-xl font-semibold mb-4 text-green-300">🛡️ 追蹤數據隱私保護承諾</h3>
+                <div class="grid md:grid-cols-3 gap-6 text-left">
+                    <div>
+                        <h4 class="font-semibold text-slate-300 mb-3">🔐 數據加密</h4>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li>• 端到端加密傳輸</li>
+                            <li>• 同態加密運算</li>
+                            <li>• 零知識證明技術</li>
+                            <li>• 本地化數據處理</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-300 mb-3">👤 用戶控制</h4>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li>• 完全數據所有權</li>
+                            <li>• 隨時刪除權利</li>
+                            <li>• 透明使用說明</li>
+                            <li>• 動態同意機制</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-300 mb-3">⚖️ 法規遵循</h4>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li>• GDPR 完全合規</li>
+                            <li>• 醫療數據保護</li>
+                            <li>• 定期安全稽核</li>
+                            <li>• 國際認證標準</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 技術架構詳細說明 -->
+        <section class="text-center">
+            <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
+                <span class="dream-gradient-text">核心AI</span>技術引擎
+            </h2>
+            <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
+                多模組AI架構深度解析夢境敘事，結合心理學理論與情感計算，
+                將潛意識訊息轉化為科學化的個人洞察與成長指引。
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">自然語言處理引擎</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        基於大型語言模型，經夢境語料庫深度微調，
+                        精確解析夢境敘事結構、隱喻象徵與潛在意義。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">💫</div>
+                    <h3 class="text-xl font-semibold mb-3 text-purple-300">多維情感分析系統</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        建構夢境情感向量空間，運用注意力機制識別
+                        32種細緻情緒狀態，追蹤情感流動軌跡。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-semibold mb-3 text-indigo-300">心理關聯模型</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        基於臨床夢境分析系統與現代心理學理論，
+                        建立夢境特徵與心理指標的深度學習預測模型。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 技術整合圖表 -->
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-semibold mb-6 dream-gradient-text">🔄 技術模組整合架構</h3>
+                <p class="text-slate-300 mb-8 text-center leading-relaxed">
+                    微服務架構實現模組間無縫協作，從多模態數據獲取到個性化洞察輸出，
+                    提供全方位的夢境智能分析服務。
+                </p>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">📝</div>
+                        <h4 class="font-semibold text-cyan-300 mb-2">數據輸入層</h4>
+                        <p class="text-xs text-slate-400">語音識別<br/>文字處理<br/>多媒體整合</p>
+                    </div>
+                    
+                    <div class="tech-flow active">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h4 class="font-semibold mb-2">AI分析引擎</h4>
+                        <p class="text-xs">NLP處理<br/>情感分析<br/>心理建模</p>
+                    </div>
+                    
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <h4 class="font-semibold text-purple-300 mb-2">洞察生成</h4>
+                        <p class="text-xs text-slate-400">模式識別<br/>趨勢分析<br/>預測建議</p>
+                    </div>
+                    
+                    <div class="tech-flow">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-semibold text-indigo-300 mb-2">視覺化輸出</h4>
+                        <p class="text-xs text-slate-400">互動報告<br/>圖表呈現<br/>個人儀表板</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 團隊與願景 -->
+        <section class="text-center">
+            <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
+                <span class="dream-gradient-text">創新團隊</span>與未來願景
+            </h2>
+            <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
+                由跨領域專家組成的精英團隊，致力於將前瞻AI技術與深度心理學洞察相結合，
+                為全球用戶打造革命性的心靈探索體驗。
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="team-card">
+                    <div class="text-5xl mb-4 relative z-10">🧠</div>
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300 relative z-10">AI技術專家</h3>
+                    <p class="text-slate-400 text-sm relative z-10">
+                        深度學習、自然語言處理、情感計算領域的頂尖人才，
+                        具備豐富的AI產品開發與部署經驗。
+                    </p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="text-5xl mb-4 relative z-10">💫</div>
+                    <h3 class="text-xl font-semibold mb-3 text-purple-300 relative z-10">心理學顧問</h3>
+                    <p class="text-slate-400 text-sm relative z-10">
+                        臨床心理師、精神科醫師與夢境研究專家，
+                        確保產品的科學性與專業性。
+                    </p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="text-5xl mb-4 relative z-10">🎨</div>
+                    <h3 class="text-xl font-semibold mb-3 text-indigo-300 relative z-10">體驗設計師</h3>
+                    <p class="text-slate-400 text-sm relative z-10">
+                        UX/UI設計與人機互動專家，
+                        打造直觀易用的夢境探索介面。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 未來發展藍圖 -->
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-semibold mb-6 dream-gradient-text">🚀 未來發展藍圖</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="text-left">
+                        <h4 class="font-semibold text-cyan-300 mb-4">短期目標（6-12個月）</h4>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li class="flex items-start space-x-2">
+                                <span class="text-cyan-400 mt-1">●</span>
+                                <span>完成MVP開發與beta測試</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-cyan-400 mt-1">●</span>
+                                <span>建立1000+用戶的種子社群</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-cyan-400 mt-1">●</span>
+                                <span>與3-5家醫療機構建立合作</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-cyan-400 mt-1">●</span>
+                                <span>獲得天使輪投資</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-left">
+                        <h4 class="font-semibold text-purple-300 mb-4">長期願景（2-5年）</h4>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li class="flex items-start space-x-2">
+                                <span class="text-purple-400 mt-1">●</span>
+                                <span>成為亞洲領先的AI心理健康平台</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-purple-400 mt-1">●</span>
+                                <span>服務100萬+全球用戶</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-purple-400 mt-1">●</span>
+                                <span>建立國際醫療合作網絡</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="text-purple-400 mt-1">●</span>
+                                <span>推動心理健康科技標準制定</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- 版權聲明 -->
+    <footer class="bg-slate-900 bg-opacity-50 backdrop-blur-lg border-t border-slate-700 py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-4">
+                <h3 class="text-lg font-semibold dream-gradient-text mb-2">AI 夢境心語</h3>
+                <p class="text-slate-400 text-sm">探索內心宇宙的智能夥伴</p>
+            </div>
+            
+            <div class="border-t border-slate-700 pt-4">
+                <p class="text-slate-500 text-sm">
+                    © 2025 AI 夢境心語團隊 版權所有 | All Rights Reserved
+                </p>
+                <p class="text-slate-600 text-xs mt-2">
+                    本網站所有內容、設計與技術架構均為 AI 夢境心語團隊原創作品
+                </p>
+                <p class="text-slate-600 text-xs mt-1">
+                    參與 2025 AI 創新獎競賽 | 智慧城市領域創新應用
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 技術流程動畫
+        function animateTechFlow() {
+            const flows = document.querySelectorAll('.tech-flow');
+            flows.forEach((flow, index) => {
+                setTimeout(() => {
+                    flow.classList.add('active');
+                    setTimeout(() => {
+                        flow.classList.remove('active');
+                    }, 1000);
+                }, index * 500);
+            });
+        }
+
+        // 浮動統計卡片互動
+        function initFloatingStats() {
+            const stats = document.querySelectorAll('.floating-stat');
+            stats.forEach(stat => {
+                stat.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) scale(1.05)';
+                });
+                
+                stat.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // 滾動觸發動畫
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // 觀察所有卡片元素
+            document.querySelectorAll('.glass-card, .floating-stat, .team-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // 按鈕點擊效果
+        function initButtonEffects() {
+            const buttons = document.querySelectorAll('.neon-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 創建漣漪效果
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.left = '50%';
+                    ripple.style.top = '50%';
+                    ripple.style.width = '20px';
+                    ripple.style.height = '20px';
+                    ripple.style.marginLeft = '-10px';
+                    ripple.style.marginTop = '-10px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // 添加漣漪動畫CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 初始化所有功能
+        document.addEventListener('DOMContentLoaded', function() {
+            initFloatingStats();
+            initScrollAnimations();
+            initButtonEffects();
+            
+            // 定期執行技術流程動畫
+            animateTechFlow();
+            setInterval(animateTechFlow, 5000);
+            
+            // 添加平滑滾動
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+
+        // 響應式導航（如果需要）
+        function initResponsiveFeatures() {
+            // 檢測移動設備
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 移動設備特定優化
+                document.querySelectorAll('.glass-card').forEach(card => {
+                    card.style.margin = '0.5rem';
+                    card.style.padding = '1rem';
+                });
+            }
+        }
+
+        // 窗口大小改變時重新初始化響應式功能
+        window.addEventListener('resize', initResponsiveFeatures);
+        initResponsiveFeatures();
+    </script>
+</body>
+</html>
