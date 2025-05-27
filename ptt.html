@@ -6,11 +6,10 @@
     <title>AI 夢境心語 - 產品簡報</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     
     <style>
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
             background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0b1f 50%, #070518 100%);
             color: #f8fafc;
             min-height: 100vh;
@@ -168,11 +167,75 @@
         
         .animate-slide-in-up { animation: slideInUp 0.8s ease-out; }
         
+        .demo-preview {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .chat-bubble {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin: 0.3rem 0;
+            font-size: 0.8rem;
+            max-width: 85%;
+        }
+        
+        .chat-bubble.ai {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            margin-right: auto;
+        }
+        
+        .chat-bubble.user {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.3);
+            margin-left: auto;
+        }
+        
+        .chat-bubble.emergency {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .floating-stat {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .floating-stat:nth-child(2) { animation-delay: -1s; }
+        .floating-stat:nth-child(3) { animation-delay: -2s; }
+        
+        .floating-stat:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        }
+        
         @media (max-width: 768px) {
             .slide { padding: 1rem; }
             .nav-button { padding: 0.75rem 1.5rem; font-size: 0.875rem; }
             .slide-number { top: 1rem; right: 1rem; padding: 0.25rem 0.75rem; font-size: 0.75rem; }
             .chart-container { height: 250px; }
+            .demo-preview { min-height: 150px; padding: 0.75rem; }
+            .chat-bubble { font-size: 0.7rem; padding: 0.4rem; }
         }
     </style>
 </head>
@@ -185,79 +248,87 @@
 
     <!-- 第1頁：標題頁 -->
     <div class="slide" id="slide1">
-        <div class="slide-number">1 / 7</div>
+        <div class="slide-number">1 / 8</div>
         <div class="container mx-auto px-6 text-center">
             <div class="animate-slide-in-up">
                 <h1 class="text-6xl md:text-8xl font-bold mb-8 dream-gradient-text glow-title">
                     AI 夢境心語
                 </h1>
                 <p class="text-2xl md:text-4xl mb-6 text-slate-300 font-light">
-                    將夢境轉化為深層次的心理見解
+                    探索內心宇宙的智能夥伴
                 </p>
                 <p class="text-lg md:text-xl text-slate-400 mb-8 max-w-4xl mx-auto leading-relaxed">
-                    一款由人工智能驅動的工具，旨在分析夢境，提供心理洞察與指導<br/>
-                    致力於將夢境轉化為深層次的心理見解<br/>
-                    提供長期追蹤功能與個性化的成長輔導
+                    結合前瞻AI技術與深度心理學洞察<br/>
+                    為您提供科學化的夢境解析與個人化心靈導航<br/>
+                    將夢境轉化為深層次的心理見解與成長指引
                 </p>
                 <div class="text-lg text-cyan-300 font-medium">
-                    2025 AI 創新獎競賽 - 智慧城市領域創新應用
+                    2025 AI 創新獎競賽 - 智慧醫療領域創新應用
+                </div>
+                <div class="mt-6 text-sm text-slate-500">
+                    雙重AI：Artificial Intelligence + Art Intelligence
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 第2頁：主要功能 -->
+    <!-- 第2頁：產品Demo展示 -->
     <div class="slide hidden-slide" id="slide2">
-        <div class="slide-number">2 / 7</div>
+        <div class="slide-number">2 / 8</div>
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12 animate-slide-in-up">
-                <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                    <span class="dream-gradient-text">主要功能</span>
+            <div class="text-center mb-8 animate-slide-in-up">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 glow-title">
+                    <span class="dream-gradient-text">產品Demo</span>體驗
                 </h2>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+                    體驗AI夢境心語如何將夢境轉化為深度心理洞察，提供長期追蹤與個人成長指引
+                </p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">👤 個人用戶版</h3>
-                    <div class="space-y-4 text-slate-300">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">📓</span>
-                            <span><strong class="text-cyan-400">夢境日記記錄</strong> - 完整記錄每個夢境細節</span>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 個人版Demo -->
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-300">🌙 個人版體驗</h3>
+                    <div class="demo-preview">
+                        <div class="chat-bubble user">
+                            <strong>用戶：</strong>最近常夢到自己被困在黑暗的房間裡，找不到出口，感覺很絕望...
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">💭</span>
-                            <span><strong class="text-purple-400">情緒分析</strong> - 深度理解夢境情感基調</span>
+                        <div class="chat-bubble ai">
+                            <strong>🔍 AI分析：</strong>您的夢境顯示憂鬱指數85%，焦慮指數90%，絕望感95%
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">⚠️</span>
-                            <span><strong class="text-red-400">風險評估</strong> - 識別潛在心理健康風險</span>
+                        <div class="chat-bubble emergency">
+                            <strong>⚠️ 緊急評估：</strong>檢測到您可能需要立即專業協助
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">💡</span>
-                            <span><strong class="text-green-400">個性化建議</strong> - 量身定制的心理指導</span>
+                        <div class="chat-bubble ai">
+                            <strong>📊 追蹤洞察：</strong>30天趨勢顯示憂鬱頻率↑65%，睡眠品質3.1/10
                         </div>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-3">
+                        ✨ 24/7即時分析 • 🔒隱私保護 • 📈長期追蹤 • 🚨緊急評估
                     </div>
                 </div>
                 
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-purple-300">👨‍⚕️ 專業版 (醫生/心理學家)</h3>
-                    <div class="space-y-4 text-slate-300">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">👥</span>
-                            <span><strong class="text-indigo-400">患者管理</strong> - 系統化管理所有患者資料</span>
+                <!-- 專業版Demo -->
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-bold mb-4 text-purple-300">🏥 專業版介面</h3>
+                    <div class="demo-preview">
+                        <div class="text-xs text-slate-300 mb-2">
+                            <strong>操作者：</strong>王醫師（精神科） | <strong>個案ID：</strong>P001
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">📋</span>
-                            <span><strong class="text-blue-400">診斷更新</strong> - 即時更新診斷進度</span>
+                        <div class="chat-bubble ai">
+                            <strong>🤖 AI專業分析：</strong>DSM-5診斷建議：重度憂鬱症(296.23)，GAF評分：35
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">🎯</span>
-                            <span><strong class="text-teal-400">治療計劃調整</strong> - 動態優化治療方案</span>
+                        <div class="bg-red-900 bg-opacity-30 border border-red-400 rounded p-2 mb-2">
+                            <div class="text-xs text-red-300">
+                                <strong>🚨 AI緊急警示：</strong>個案存在高度自傷風險，建議立即危機介入
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">📊</span>
-                            <span><strong class="text-orange-400">專業分析工具</strong> - 深度數據洞察</span>
+                        <div class="chat-bubble ai">
+                            <strong>⚕️ 臨床決策支援：</strong>建議立即精神科急診評估，考慮短期住院治療
                         </div>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-3">
+                        🩺 專業醫療工具 • 📊結構化報告 • 🔮預測分析 • ⚕️臨床決策支援
                     </div>
                 </div>
             </div>
@@ -266,57 +337,80 @@
 
     <!-- 第3頁：智能追蹤系統 -->
     <div class="slide hidden-slide" id="slide3">
-        <div class="slide-number">3 / 7</div>
+        <div class="slide-number">3 / 8</div>
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 animate-slide-in-up">
                 <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                    <span class="dream-gradient-text">智能追蹤系統</span>
+                    <span class="dream-gradient-text">智能追蹤</span>系統
                 </h2>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+                    建立個人專屬的心理健康檔案，透過AI持續學習與優化，提供精準的成長軌跡追蹤
+                </p>
             </div>
             
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">📊 個人追蹤功能</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">🏠 個人版追蹤功能</h3>
                     <div class="space-y-4">
-                        <div class="bg-slate-800 bg-opacity-50 p-4 rounded-lg">
-                            <div class="text-sm font-semibold text-cyan-300 mb-2">
-                                詳細夢境日誌
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                記錄每個夢境的完整細節，建立個人夢境數據庫
-                            </div>
+                        <div class="border-l-4 border-cyan-400 pl-4">
+                            <h4 class="font-semibold text-cyan-300 mb-2">📖 夢境日記系統</h4>
+                            <p class="text-slate-400 text-sm">
+                                連續記錄與分析夢境內容，建立個人夢境資料庫，追蹤夢境主題演變與情緒變化軌跡
+                            </p>
                         </div>
                         
-                        <div class="bg-purple-900 bg-opacity-30 p-4 rounded-lg">
-                            <div class="text-sm font-semibold text-purple-300 mb-2">
-                                心理健康儀表板
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                視覺化呈現心理狀態，即時掌握情緒變化趨勢
-                            </div>
+                        <div class="border-l-4 border-purple-400 pl-4">
+                            <h4 class="font-semibold text-purple-300 mb-2">📊 心理健康儀表板</h4>
+                            <p class="text-slate-400 text-sm">
+                                整合睡眠品質、情緒指標、壓力水平等多維度數據，提供視覺化的個人心理健康全景
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-yellow-400 pl-4">
+                            <h4 class="font-semibold text-yellow-300 mb-2">🎯 成長里程碑</h4>
+                            <p class="text-slate-400 text-sm">
+                                設定個人成長目標，追蹤達成進度，慶祝每個心理健康改善的重要時刻
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-4">
+                            <h4 class="font-semibold text-red-300 mb-2">🚨 智能預警系統</h4>
+                            <p class="text-slate-400 text-sm">
+                                AI監測異常夢境模式與情緒波動，及早發現潛在心理健康風險並提供緊急支援
+                            </p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-purple-300">🎯 專業追蹤功能</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-purple-300">🏥 專業版追蹤功能</h3>
                     <div class="space-y-4">
-                        <div class="bg-indigo-900 bg-opacity-30 p-4 rounded-lg">
-                            <div class="text-sm font-semibold text-indigo-300 mb-2">
-                                進度里程碑設定
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                設定並追蹤治療目標，監測康復進度
-                            </div>
+                        <div class="border-l-4 border-indigo-400 pl-4">
+                            <h4 class="font-semibold text-indigo-300 mb-2">📋 個案管理系統</h4>
+                            <p class="text-slate-400 text-sm">
+                                完整的個案追蹤檔案，整合夢境分析、治療進展、用藥記錄等多元數據
+                            </p>
                         </div>
                         
-                        <div class="bg-red-900 bg-opacity-30 p-4 rounded-lg">
-                            <div class="text-sm font-semibold text-red-300 mb-2">
-                                持續監測與風險預警
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                24/7 監測心理健康狀況，提供即時風險提示
-                            </div>
+                        <div class="border-l-4 border-pink-400 pl-4">
+                            <h4 class="font-semibold text-pink-300 mb-2">🔮 AI預測分析模型</h4>
+                            <p class="text-slate-400 text-sm">
+                                運用機器學習預測治療效果、復發風險、最佳治療時機，輔助醫師臨床決策
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-teal-400 pl-4">
+                            <h4 class="font-semibold text-teal-300 mb-2">📈 療效追蹤報告</h4>
+                            <p class="text-slate-400 text-sm">
+                                自動生成標準化療效評估報告，支援醫學研究數據收集與臨床證據建立
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-4">
+                            <h4 class="font-semibold text-red-300 mb-2">🚨 危機預警系統</h4>
+                            <p class="text-slate-400 text-sm">
+                                即時監測高風險個案，自動觸發危機介入程序，通知醫療團隊啟動緊急應對
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -326,43 +420,73 @@
 
     <!-- 第4頁：核心AI技術引擎 -->
     <div class="slide hidden-slide" id="slide4">
-        <div class="slide-number">4 / 7</div>
+        <div class="slide-number">4 / 8</div>
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 animate-slide-in-up">
                 <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                    <span class="dream-gradient-text">核心AI技術引擎</span>
+                    <span class="dream-gradient-text">核心AI</span>技術引擎
                 </h2>
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    多模組AI架構深度解析夢境敘事，結合心理學理論與情感計算，將潛意識訊息轉化為科學化洞察
+                </p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
                 <div class="glass-card p-8">
-                    <div class="feature-icon">🗣️</div>
-                    <h3 class="text-xl font-bold mb-4 text-cyan-300">自然語言處理 (NLP)</h3>
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="text-xl font-bold mb-4 text-cyan-300">自然語言處理引擎</h3>
                     <p class="text-slate-400 leading-relaxed">
-                        運用最先進的NLP技術解析夢境的敘述內容，
-                        理解複雜的語言結構，精確捕捉夢境中的
-                        關鍵元素與隱含意義。
+                        基於大型語言模型，經夢境語料庫深度微調，
+                        精確解析夢境敘事結構、隱喻象徵與潛在意義
                     </p>
                 </div>
                 
                 <div class="glass-card p-8">
-                    <div class="feature-icon">💭</div>
-                    <h3 class="text-xl font-bold mb-4 text-purple-300">情緒分析技術</h3>
+                    <div class="feature-icon">💫</div>
+                    <h3 class="text-xl font-bold mb-4 text-purple-300">多維情感分析系統</h3>
                     <p class="text-slate-400 leading-relaxed">
-                        深度理解夢境背後的情感基調，
-                        識別潛在的情緒模式，提供精準的
-                        心理狀態分析與評估。
+                        建構夢境情感向量空間，運用注意力機制識別
+                        32種細緻情緒狀態，追蹤情感流動軌跡
                     </p>
                 </div>
                 
                 <div class="glass-card p-8">
                     <div class="feature-icon">🧠</div>
-                    <h3 class="text-xl font-bold mb-4 text-indigo-300">心理學相關模型</h3>
+                    <h3 class="text-xl font-bold mb-4 text-indigo-300">心理關聯模型</h3>
                     <p class="text-slate-400 leading-relaxed">
-                        應用專業心理學理論解釋夢境的深層含義，
-                        建立夢境與心理狀態的潛在聯繫，
-                        提供科學化的心理洞察。
+                        基於臨床夢境分析系統與現代心理學理論，
+                        建立夢境特徵與心理指標的深度學習預測模型
                     </p>
+                </div>
+            </div>
+            
+            <!-- 技術整合架構圖 -->
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-semibold mb-6 dream-gradient-text text-center">🔄 技術模組整合架構</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center p-4 bg-cyan-900 bg-opacity-30 rounded-lg">
+                        <div class="text-2xl mb-2">📝</div>
+                        <h4 class="font-semibold text-cyan-300 mb-2">數據輸入層</h4>
+                        <p class="text-xs text-slate-400">語音識別<br/>文字處理<br/>多媒體整合</p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-purple-900 bg-opacity-30 rounded-lg">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h4 class="font-semibold text-purple-300 mb-2">AI分析引擎</h4>
+                        <p class="text-xs text-slate-400">NLP處理<br/>情感分析<br/>心理建模</p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-indigo-900 bg-opacity-30 rounded-lg">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <h4 class="font-semibold text-indigo-300 mb-2">洞察生成</h4>
+                        <p class="text-xs text-slate-400">模式識別<br/>趨勢分析<br/>預測建議</p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-teal-900 bg-opacity-30 rounded-lg">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-semibold text-teal-300 mb-2">視覺化輸出</h4>
+                        <p class="text-xs text-slate-400">互動報告<br/>圖表呈現<br/>個人儀表板</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -370,60 +494,77 @@
 
     <!-- 第5頁：數據隱私保護 -->
     <div class="slide hidden-slide" id="slide5">
-        <div class="slide-number">5 / 7</div>
+        <div class="slide-number">5 / 8</div>
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 animate-slide-in-up">
                 <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                    <span class="dream-gradient-text">數據隱私保護</span>
+                    <span class="dream-gradient-text">數據隱私</span>保護承諾
                 </h2>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+                    您的夢境是您最私密的心靈世界，我們承諾以最高標準保護您的隱私安全
+                </p>
             </div>
             
-            <div class="max-w-4xl mx-auto">
-                <div class="glass-card p-8">
-                    <div class="text-center mb-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div class="glass-card p-8 text-center">
                         <div class="feature-icon">🔐</div>
-                        <h3 class="text-2xl font-bold text-cyan-300 mb-4">我們高度重視您的隱私與安全</h3>
+                        <h3 class="text-xl font-bold text-cyan-300 mb-4">數據加密</h3>
+                        <ul class="space-y-2 text-slate-400 text-sm text-left">
+                            <li>• 端到端加密傳輸</li>
+                            <li>• 同態加密運算</li>
+                            <li>• 零知識證明技術</li>
+                            <li>• 本地化數據處理</li>
+                        </ul>
                     </div>
                     
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg p-6">
-                                <div class="text-3xl mb-3">🛡️</div>
-                                <h4 class="font-bold text-cyan-300 mb-2">端到端加密</h4>
-                                <p class="text-sm text-slate-300">
-                                    採用最先進的加密技術措施，
-                                    保護用戶數據的傳輸與儲存
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="bg-gradient-to-br from-purple-900 to-pink-900 rounded-lg p-6">
-                                <div class="text-3xl mb-3">📜</div>
-                                <h4 class="font-bold text-purple-300 mb-2">法規合規</h4>
-                                <p class="text-sm text-slate-300">
-                                    確保系統符合相關數據保護法規，
-                                    包括GDPR、HIPAA等國際標準
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="bg-gradient-to-br from-indigo-900 to-teal-900 rounded-lg p-6">
-                                <div class="text-3xl mb-3">🔒</div>
-                                <h4 class="font-bold text-indigo-300 mb-2">用戶控制權</h4>
-                                <p class="text-sm text-slate-300">
-                                    用戶完全掌控自己的數據，
-                                    隨時可查看、導出或刪除資料
-                                </p>
-                            </div>
-                        </div>
+                    <div class="glass-card p-8 text-center">
+                        <div class="feature-icon">👤</div>
+                        <h3 class="text-xl font-bold text-purple-300 mb-4">用戶控制</h3>
+                        <ul class="space-y-2 text-slate-400 text-sm text-left">
+                            <li>• 完全數據所有權</li>
+                            <li>• 隨時刪除權利</li>
+                            <li>• 透明使用說明</li>
+                            <li>• 動態同意機制</li>
+                        </ul>
                     </div>
                     
-                    <div class="mt-8 text-center">
-                        <p class="text-slate-400">
-                            您的夢境是您最私密的心靈世界，我們承諾以最高標準保護您的隱私安全
+                    <div class="glass-card p-8 text-center">
+                        <div class="feature-icon">⚖️</div>
+                        <h3 class="text-xl font-bold text-indigo-300 mb-4">法規遵循</h3>
+                        <ul class="space-y-2 text-slate-400 text-sm text-left">
+                            <li>• GDPR 完全合規</li>
+                            <li>• 醫療數據保護</li>
+                            <li>• 定期安全稽核</li>
+                            <li>• 國際認證標準</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-8 border-2 border-green-400 border-opacity-50">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-green-300 mb-4">🛡️ 隱私保護技術架構</h3>
+                        <p class="text-slate-300 mb-6">
+                            採用多層防護機制，確保用戶夢境數據在收集、處理、儲存、傳輸的全生命週期中得到最高級別的保護
                         </p>
+                        <div class="grid md:grid-cols-4 gap-4 text-sm">
+                            <div class="bg-green-900 bg-opacity-30 p-3 rounded-lg">
+                                <div class="font-semibold text-green-300">收集階段</div>
+                                <div class="text-slate-400">最小化原則</div>
+                            </div>
+                            <div class="bg-blue-900 bg-opacity-30 p-3 rounded-lg">
+                                <div class="font-semibold text-blue-300">處理階段</div>
+                                <div class="text-slate-400">匿名化處理</div>
+                            </div>
+                            <div class="bg-purple-900 bg-opacity-30 p-3 rounded-lg">
+                                <div class="font-semibold text-purple-300">儲存階段</div>
+                                <div class="text-slate-400">分散式加密</div>
+                            </div>
+                            <div class="bg-cyan-900 bg-opacity-30 p-3 rounded-lg">
+                                <div class="font-semibold text-cyan-300">傳輸階段</div>
+                                <div class="text-slate-400">安全通道</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -432,64 +573,95 @@
 
     <!-- 第6頁：市場洞察與無限潛力 -->
     <div class="slide hidden-slide" id="slide6">
-        <div class="slide-number">6 / 7</div>
+        <div class="slide-number">6 / 8</div>
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 animate-slide-in-up">
                 <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
-                    <span class="dream-gradient-text">市場洞察與無限潛力</span>
+                    市場洞察與<span class="dream-gradient-text">無限潛力</span>
                 </h2>
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    在心靈探索需求日益增長的時代，AI夢境心語以前瞻科技打造個人化的內心宇宙導航系統
+                </p>
             </div>
             
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="floating-stat">
+                    <div class="text-6xl mb-4">🌟</div>
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">AI賦能心靈探索</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        突破性的夢境解析技術，結合深度學習與心理學理論，
+                        為用戶提供前所未有的個性化心靈導航體驗
+                    </p>
+                </div>
+                
+                <div class="floating-stat">
+                    <div class="text-6xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold mb-3 text-purple-300">開創科技新領域</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        憑藉獨創的AI夢境分析引擎，開拓心理健康科技藍海，
+                        構建全新的數位心靈服務生態系統
+                    </p>
+                </div>
+                
+                <div class="floating-stat">
+                    <div class="text-6xl mb-4">🌍</div>
+                    <h3 class="text-xl font-semibold mb-3 text-indigo-300">提升全民心靈福祉</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        普及科學化心靈探索工具，透過AI早期預警與個性化引導，
+                        提升全民心理健康意識與自我照護能力
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 市場機會分析 -->
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">🌍 回應社會需求</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">🎯 目標市場</h3>
                     <div class="space-y-4">
-                        <div class="p-4 bg-slate-800 bg-opacity-50 rounded-lg">
-                            <div class="text-lg font-semibold text-cyan-300 mb-2">
-                                心理健康支持日益增長
-                            </div>
-                            <div class="text-sm text-slate-400">
-                                全球對心理健康服務的需求呈指數級增長，
-                                傳統服務模式已無法滿足龐大需求
-                            </div>
+                        <div class="border-l-4 border-cyan-400 pl-4">
+                            <h4 class="font-bold text-cyan-300 mb-2">個人用戶市場</h4>
+                            <p class="text-sm text-slate-400">
+                                關注心理健康的個人用戶，尋求自我探索與成長的年輕族群
+                            </p>
                         </div>
                         
-                        <div class="p-4 bg-purple-900 bg-opacity-30 rounded-lg">
-                            <div class="text-lg font-semibold text-purple-300 mb-2">
-                                AI賦能心理健康新革命
-                            </div>
-                            <div class="text-sm text-slate-400">
-                                透過AI技術實現心理健康服務的民主化，
-                                讓每個人都能獲得專業級的心理支援
-                            </div>
+                        <div class="border-l-4 border-purple-400 pl-4">
+                            <h4 class="font-bold text-purple-300 mb-2">醫療機構市場</h4>
+                            <p class="text-sm text-slate-400">
+                                精神科醫院、心理諮商中心、社區心理健康服務機構
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-400 pl-4">
+                            <h4 class="font-bold text-indigo-300 mb-2">企業健康市場</h4>
+                            <p class="text-sm text-slate-400">
+                                重視員工心理健康的企業，提供員工輔助計劃(EAP)服務
+                            </p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="glass-card p-8">
-                    <h3 class="text-2xl font-bold mb-6 text-purple-300">🚀 AI夢境心語的巨大潛力</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-purple-300">📈 競爭優勢</h3>
                     <div class="space-y-4">
-                        <div class="border-l-4 border-cyan-400 pl-4">
-                            <h4 class="font-bold text-cyan-300 mb-2">市場領先優勢</h4>
+                        <div class="border-l-4 border-green-400 pl-4">
+                            <h4 class="font-bold text-green-300 mb-2">技術領先</h4>
                             <p class="text-sm text-slate-400">
-                                首創結合AI與夢境分析的心理健康平台，
-                                技術壁壘高，競爭優勢明顯
+                                首創AI夢境分析技術，具有強大的技術壁壘和先發優勢
                             </p>
                         </div>
                         
-                        <div class="border-l-4 border-purple-400 pl-4">
-                            <h4 class="font-bold text-purple-300 mb-2">擴展潛力無限</h4>
+                        <div class="border-l-4 border-yellow-400 pl-4">
+                            <h4 class="font-bold text-yellow-300 mb-2">專業認證</h4>
                             <p class="text-sm text-slate-400">
-                                從個人用戶到醫療機構、企業健康管理，
-                                應用場景廣泛，市場前景廣闊
+                                與頂尖心理學專家合作，確保分析結果的科學性和準確性
                             </p>
                         </div>
                         
-                        <div class="border-l-4 border-indigo-400 pl-4">
-                            <h4 class="font-bold text-indigo-300 mb-2">社會影響力</h4>
+                        <div class="border-l-4 border-pink-400 pl-4">
+                            <h4 class="font-bold text-pink-300 mb-2">生態整合</h4>
                             <p class="text-sm text-slate-400">
-                                為全球心理健康事業做出實質貢獻，
-                                創造可持續的社會價值
+                                打造完整的心理健康服務生態系統，提供一站式解決方案
                             </p>
                         </div>
                     </div>
@@ -498,47 +670,182 @@
         </div>
     </div>
 
-    <!-- 第7頁：總結與展望 -->
+    <!-- 第7頁：智慧城市應用場景 -->
     <div class="slide hidden-slide" id="slide7">
-        <div class="slide-number">7 / 7</div>
+        <div class="slide-number">7 / 8</div>
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 animate-slide-in-up">
+                <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
+                    <span class="dream-gradient-text">智慧城市</span>應用場景
+                </h2>
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    融入智慧城市生態，提升城市居民心理健康水平，打造以人為本的智慧生活環境
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-300">🏥 智慧醫療整合</h3>
+                    <div class="space-y-4">
+                        <div class="bg-slate-800 bg-opacity-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-cyan-300 mb-2">醫療資源優化</h4>
+                            <p class="text-sm text-slate-400">
+                                透過AI預測分析，協助醫療機構合理配置心理健康資源，
+                                提升醫療服務效率與品質
+                            </p>
+                        </div>
+                        
+                        <div class="bg-purple-900 bg-opacity-30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-300 mb-2">遠程醫療支援</h4>
+                            <p class="text-sm text-slate-400">
+                                結合遠程醫療平台，為偏遠地區提供專業心理健康服務，
+                                縮小城鄉醫療資源差距
+                            </p>
+                        </div>
+                        
+                        <div class="bg-indigo-900 bg-opacity-30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-300 mb-2">公共衛生監測</h4>
+                            <p class="text-sm text-slate-400">
+                                建立城市心理健康監測網絡，及早發現和預防心理健康危機，
+                                保障市民心理健康安全
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-purple-300">🌆 智慧生活服務</h3>
+                    <div class="space-y-4">
+                        <div class="bg-green-900 bg-opacity-30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-300 mb-2">社區健康中心</h4>
+                            <p class="text-sm text-slate-400">
+                                在社區健康中心部署AI夢境心語系統，
+                                為居民提供便民的心理健康篩檢與諮詢服務
+                            </p>
+                        </div>
+                        
+                        <div class="bg-blue-900 bg-opacity-30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-300 mb-2">校園心理支援</h4>
+                            <p class="text-sm text-slate-400">
+                                與教育機構合作，為學生提供心理健康監測與輔導，
+                                創建安全友善的校園環境
+                            </p>
+                        </div>
+                        
+                        <div class="bg-teal-900 bg-opacity-30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-teal-300 mb-2">職場健康管理</h4>
+                            <p class="text-sm text-slate-400">
+                                協助企業建立員工心理健康管理系統，
+                                提升工作效率與員工滿意度
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 社會影響力指標 -->
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-bold mb-6 dream-gradient-text text-center">📊 預期社會影響力</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center p-4 bg-cyan-900 bg-opacity-30 rounded-lg">
+                        <div class="text-3xl font-bold text-cyan-300 mb-2">85%</div>
+                        <div class="text-sm text-slate-400">早期心理健康<br/>風險識別率</div>
+                    </div>
+                    <div class="text-center p-4 bg-purple-900 bg-opacity-30 rounded-lg">
+                        <div class="text-3xl font-bold text-purple-300 mb-2">60%</div>
+                        <div class="text-sm text-slate-400">醫療資源<br/>配置效率提升</div>
+                    </div>
+                    <div class="text-center p-4 bg-indigo-900 bg-opacity-30 rounded-lg">
+                        <div class="text-3xl font-bold text-indigo-300 mb-2">40%</div>
+                        <div class="text-sm text-slate-400">心理健康服務<br/>可及性改善</div>
+                    </div>
+                    <div class="text-center p-4 bg-teal-900 bg-opacity-30 rounded-lg">
+                        <div class="text-3xl font-bold text-teal-300 mb-2">100萬+</div>
+                        <div class="text-sm text-slate-400">預期受益<br/>市民人數</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第8頁：總結與展望 -->
+    <div class="slide hidden-slide" id="slide8">
+        <div class="slide-number">8 / 8</div>
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 animate-slide-in-up">
                 <h2 class="text-4xl md:text-6xl font-bold mb-8 glow-title">
                     <span class="dream-gradient-text">未來願景</span>與行動呼籲
                 </h2>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+                    讓我們一起用AI科技點亮心靈世界，為每個人建造屬於自己的內心宇宙導航系統
+                </p>
             </div>
             
-            <div class="text-center">
+            <div class="text-center mb-12">
                 <div class="glass-card p-8 max-w-4xl mx-auto">
                     <h3 class="text-3xl font-bold mb-6 dream-gradient-text">💝 加入我們的夢境探索之旅</h3>
-                    <p class="text-xl text-slate-300 mb-8 leading-relaxed">
-                        讓我們一起用AI科技點亮心靈世界，
-                        為每個人建造屬於自己的內心宇宙導航系統
-                    </p>
                     
                     <div class="grid md:grid-cols-3 gap-6 mb-8">
                         <div class="p-6 bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg">
                             <div class="text-2xl mb-3">👥</div>
                             <h4 class="font-bold text-cyan-300 mb-2">投資夥伴</h4>
-                            <p class="text-sm text-slate-300">尋求A輪 $5M 投資</p>
+                            <p class="text-sm text-slate-300">尋求A輪 $5M 投資<br/>共同開創心理健康科技新時代</p>
                         </div>
                         <div class="p-6 bg-gradient-to-br from-purple-900 to-pink-900 rounded-lg">
                             <div class="text-2xl mb-3">🏥</div>
                             <h4 class="font-bold text-purple-300 mb-2">醫療機構</h4>
-                            <p class="text-sm text-slate-300">臨床合作與驗證</p>
+                            <p class="text-sm text-slate-300">臨床合作與驗證<br/>建立循證醫學基礎</p>
                         </div>
                         <div class="p-6 bg-gradient-to-br from-indigo-900 to-teal-900 rounded-lg">
                             <div class="text-2xl mb-3">🧑‍💼</div>
                             <h4 class="font-bold text-indigo-300 mb-2">人才招募</h4>
-                            <p class="text-sm text-slate-300">AI/心理學專家</p>
+                            <p class="text-sm text-slate-300">AI/心理學專家<br/>共同打造夢境科技未來</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold text-slate-300 mb-4">🎯 2025年發展目標</h4>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="text-left">
+                                <ul class="space-y-2 text-slate-400">
+                                    <li>• 完成產品MVP開發與測試</li>
+                                    <li>• 建立10家醫療機構合作夥伴</li>
+                                    <li>• 獲得醫療器材相關認證</li>
+                                    <li>• 累積10,000名用戶使用數據</li>
+                                </ul>
+                            </div>
+                            <div class="text-left">
+                                <ul class="space-y-2 text-slate-400">
+                                    <li>• 發表3篇國際期刊論文</li>
+                                    <li>• 申請5項核心技術專利</li>
+                                    <li>• 建立標準化評估體系</li>
+                                    <li>• 啟動國際市場拓展計劃</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="text-lg font-semibold text-slate-300 mb-4">
-                        📧 聯絡我們：<span class="text-cyan-400">contact@ai-dream.tech</span>
+                        📧 聯絡我們：<span class="text-cyan-400">contact@ai-dreamheart.tech</span>
+                    </div>
+                    <div class="text-sm text-slate-400 mb-4">
+                        🌐 官方網站：<span class="text-purple-400">www.ai-dreamheart.tech</span>
                     </div>
                     <div class="text-sm text-slate-400">
-                        © 2025 AI 夢境心語團隊 | 讓科技成為心靈的明燈
+                        © 2025 AI 夢境心語團隊 | 讓科技成為心靈的明燈 | AI創新獎競賽參賽作品
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 競賽資訊 -->
+            <div class="glass-card p-6 max-w-2xl mx-auto border-2 border-yellow-400 border-opacity-50">
+                <div class="text-center">
+                    <h4 class="text-lg font-bold text-yellow-300 mb-3">🏆 AI 創新獎競賽資訊</h4>
+                    <div class="text-sm text-slate-300 space-y-1">
+                        <p><strong>競賽主題：</strong>雙重AI - Artificial Intelligence + Art Intelligence</p>
+                        <p><strong>應用領域：</strong>智慧醫療 - 心理健康創新應用</p>
+                        <p><strong>核心價值：</strong>以人為本的生活實驗室，融合科技與人文</p>
+                        <p><strong>社會影響：</strong>提升全民心理健康水平，促進社會福祉</p>
                     </div>
                 </div>
             </div>
@@ -547,7 +854,7 @@
 
     <script>
         var currentSlide = 1;
-        var totalSlides = 7;
+        var totalSlides = 8;
 
         function updateProgress() {
             var progress = (currentSlide / totalSlides) * 100;
@@ -558,8 +865,6 @@
         }
 
         function showSlide(slideNumber) {
-            console.log('顯示頁面:', slideNumber);
-            
             for (var i = 1; i <= totalSlides; i++) {
                 var slide = document.getElementById('slide' + i);
                 if (slide) {
@@ -570,15 +875,10 @@
             var targetSlide = document.getElementById('slide' + slideNumber);
             if (targetSlide) {
                 targetSlide.classList.remove('hidden-slide');
-                console.log('成功顯示頁面:', slideNumber);
             }
             
             updateButtonStates(slideNumber);
             updateProgress();
-            
-            if (slideNumber === 6) {
-                setTimeout(initCharts, 500);
-            }
         }
 
         function updateButtonStates(slideNumber) {
@@ -607,7 +907,6 @@
         }
 
         function nextSlide() {
-            console.log('下一頁被點擊');
             if (currentSlide < totalSlides) {
                 currentSlide++;
                 showSlide(currentSlide);
@@ -615,119 +914,28 @@
         }
 
         function prevSlide() {
-            console.log('上一頁被點擊');
             if (currentSlide > 1) {
                 currentSlide--;
                 showSlide(currentSlide);
             }
         }
 
-        function initCharts() {
-            console.log('初始化圖表...');
-            try {
-                if (typeof Chart === 'undefined') {
-                    console.warn('Chart.js 尚未載入');
-                    return;
-                }
-
-                var marketCtx = document.getElementById('marketChart');
-                if (marketCtx) {
-                    new Chart(marketCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['個人用戶', '醫療機構', '企業健康', '其他'],
-                            datasets: [{
-                                data: [50, 30, 20, 10],
-                                backgroundColor: ['#06B6D4', '#8B5CF6', '#6366F1', '#A855F7'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        color: '#f8fafc',
-                                        padding: 20
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    console.log('市場圖表初始化成功');
-                }
-                
-                var revenueCtx = document.getElementById('revenueChart');
-                if (revenueCtx) {
-                    new Chart(revenueCtx, {
-                        type: 'line',
-                        data: {
-                            labels: ['2025', '2026', '2027', '2028', '2029'],
-                            datasets: [{
-                                label: '營收 (百萬美元)',
-                                data: [5, 25, 65, 140, 220],
-                                borderColor: '#06B6D4',
-                                backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { display: false }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        color: '#f8fafc',
-                                        callback: function(value) {
-                                            return value + 'M';
-                                        }
-                                    },
-                                    grid: { color: 'rgba(139, 92, 246, 0.2)' }
-                                },
-                                x: {
-                                    ticks: { color: '#f8fafc' },
-                                    grid: { color: 'rgba(139, 92, 246, 0.2)' }
-                                }
-                            }
-                        }
-                    });
-                    console.log('營收圖表初始化成功');
-                }
-            } catch (error) {
-                console.error('圖表初始化錯誤:', error);
-            }
-        }
-
         function initPresentation() {
-            console.log('初始化簡報系統...');
-            
             var prevBtn = document.getElementById('prevBtn');
             var nextBtn = document.getElementById('nextBtn');
             
             if (prevBtn) {
                 prevBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('上一頁按鈕被點擊');
                     prevSlide();
                 });
-                console.log('上一頁按鈕監聽器已設置');
             }
             
             if (nextBtn) {
                 nextBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('下一頁按鈕被點擊');
                     nextSlide();
                 });
-                console.log('下一頁按鈕監聽器已設置');
             }
             
             document.addEventListener('keydown', function(e) {
@@ -741,17 +949,15 @@
             });
             
             showSlide(1);
-            console.log('簡報初始化完成');
         }
 
-        // 確保頁面完全載入後再初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
-                console.log('DOM已載入，開始初始化...');
                 initPresentation();
             });
         } else {
-            console.log('DOM已經準備好，直接初始化...');
             setTimeout(initPresentation, 100);
         }
     </script>
+</body>
+</html>
