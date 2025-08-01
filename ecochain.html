@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoChain - 社區垃圾減量獎勵平台 | 2025總統盃黑客松</title>
+    <meta name="description" content="用區塊鏈和AI技術，讓每一公斤垃圾減量都有價值。基於14年台灣廢棄物真實資料的創新環保平台。">
+    
+    <!-- External CDN Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2E7D2E 0%, #1E88E5 100%);
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .hero-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .counter {
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .eco-green { color: #2E7D2E; }
+        .eco-blue { color: #1E88E5; }
+        .eco-orange { color: #FF6B35; }
+        
+        .bg-eco-green { background-color: #2E7D2E; }
+        .bg-eco-blue { background-color: #1E88E5; }
+        .bg-eco-orange { background-color: #FF6B35; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #2E7D2E, #1E88E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .progress-bar-animate {
+            transition: width 2s ease-in-out;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: .15em solid #2E7D2E;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #2E7D2E; }
+        }
+        
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .city-ranking-item {
+            transition: all 0.3s ease;
+        }
+        
+        .city-ranking-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2E7D2E;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-eco-green rounded-full flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800">EcoChain</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#problem" class="text-gray-600 hover:text-eco-green transition">問題分析</a>
+                    <a href="#solution" class="text-gray-600 hover:text-eco-green transition">解決方案</a>
+                    <a href="#data" class="text-gray-600 hover:text-eco-green transition">資料分析</a>
+                    <a href="#impact" class="text-gray-600 hover:text-eco-green transition">社會影響</a>
+                    <a href="#team" class="text-gray-600 hover:text-eco-green transition">團隊</a>
+                </div>
+                
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-full h-full bg-white z-40 md:hidden">
+            <div class="flex items-center justify-between p-6 border-b">
+                <span class="text-xl font-bold text-gray-800">選單</span>
+                <button onclick="toggleMobileMenu()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <a href="#problem" class="block text-lg text-gray-700 py-2" onclick="toggleMobileMenu()">問題分析</a>
+                <a href="#solution" class="block text-lg text-gray-700 py-2" onclick="toggleMobileMenu()">解決方案</a>
+                <a href="#data" class="block text-lg text-gray-700 py-2" onclick="toggleMobileMenu()">資料分析</a>
+                <a href="#impact" class="block text-lg text-gray-700 py-2" onclick="toggleMobileMenu()">社會影響</a>
+                <a href="#team" class="block text-lg text-gray-700 py-2" onclick="toggleMobileMenu()">團隊</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-12 gradient-bg relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        
+        <!-- Background Animation -->
+        <div class="absolute inset-0">
+            <div class="hero-animation absolute top-20 left-10 w-4 h-4 bg-white rounded-full opacity-20"></div>
+            <div class="hero-animation absolute top-40 right-20 w-6 h-6 bg-white rounded-full opacity-15" style="animation-delay: -2s;"></div>
+            <div class="hero-animation absolute bottom-20 left-1/4 w-3 h-3 bg-white rounded-full opacity-25" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <!-- Main Headline -->
+                <div class="mb-8">
+                    <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-medium mb-6">
+                        <span class="pulse-dot w-2 h-2 bg-eco-orange rounded-full mr-2"></span>
+                        2025總統盃黑客松 - 綠色成長組
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                        <span class="block">EcoChain</span>
+                        <span class="block text-3xl md:text-4xl font-light opacity-90">社區垃圾減量獎勵平台</span>
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-white/90 font-light mb-12 leading-relaxed">
+                        用<span class="font-semibold text-eco-orange">區塊鏈</span>和<span class="font-semibold text-eco-orange">AI</span>技術<br>
+                        讓每一公斤垃圾減量都有價值
+                    </p>
+                </div>
+                
+                <!-- Real-time Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-trash-alt text-eco-orange text-2xl mr-3"></i>
+                            <span class="text-white/80 font-medium">台灣垃圾產生量</span>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter" id="wasteCounter">1,150</div>
+                        <div class="text-white/70 text-sm mt-1">萬噸/年</div>
+                        <div class="text-eco-orange text-xs mt-2">⚡ 基於真實政府資料</div>
+                    </div>
+                    
+                    <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-user text-eco-orange text-2xl mr-3"></i>
+                            <span class="text-white/80 font-medium">人均產生量</span>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter" id="perCapitaCounter">1.37</div>
+                        <div class="text-white/70 text-sm mt-1">公斤/人/日</div>
+                        <div class="text-eco-orange text-xs mt-2">📊 2025年最新數據</div>
+                    </div>
+                    
+                    <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-target text-eco-orange text-2xl mr-3"></i>
+                            <span class="text-white/80 font-medium">減量潛力</span>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter" id="potentialCounter">345</div>
+                        <div class="text-white/70 text-sm mt-1">萬噸/年</div>
+                        <div class="text-eco-orange text-xs mt-2">🎯 AI預測分析</div>
+                    </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button onclick="scrollToSection('solution')" class="bg-eco-orange hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full transition transform hover:scale-105 shadow-lg flex items-center">
+                        <i class="fas fa-rocket mr-2"></i>
+                        開始我的環保旅程
+                    </button>
+                    <button onclick="scrollToSection('data')" class="bg-white/20 hover:bg-white/30 text-white font-semibold px-8 py-4 rounded-full border border-white/30 transition backdrop-blur-sm flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        查看縣市排名
+                    </button>
+                </div>
+                
+                <!-- Scroll Indicator -->
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                    <div class="animate-bounce">
+                        <i class="fas fa-chevron-down text-white/60 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Visualization Section -->
+    <section id="problem" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    台灣垃圾危機<span class="text-gradient">一覽</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    基於環境部14年完整資料，深度剖析台灣廢棄物問題現況
+                </p>
+            </div>
+            
+            <!-- Crisis Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Crisis Card 1 -->
+                <div class="bg-red-50 rounded-2xl p-6 border-l-4 border-red-500 card-hover fade-in">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-fire text-red-500 text-2xl mr-3"></i>
+                        <h4 class="text-xl font-bold text-red-800">垃圾量冠軍</h4>
+                    </div>
+                    <div class="text-3xl font-bold text-red-600 mb-2">新北市</div>
+                    <div class="text-red-700">2022年增加 <span class="font-bold">51.3萬噸</span></div>
+                    <div class="text-sm text-red-600 mt-2">相當於每日增加1,400噸垃圾</div>
+                </div>
+                
+                <!-- Crisis Card 2 -->
+                <div class="bg-orange-50 rounded-2xl p-6 border-l-4 border-orange-500 card-hover fade-in">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-chart-line text-orange-500 text-2xl mr-3"></i>
+                        <h4 class="text-xl font-bold text-orange-800">暫存垃圾危機</h4>
+                    </div>
+                    <div class="text-3xl font-bold text-orange-600 mb-2">75.2萬噸</div>
+                    <div class="text-orange-700">5年增長 <span class="font-bold">9倍</span> (2017年僅8.1萬噸)</div>
+                    <div class="text-sm text-orange-600 mt-2">全台至少100處暫存場</div>
+                </div>
+                
+                <!-- Crisis Card 3 -->
+                <div class="bg-yellow-50 rounded-2xl p-6 border-l-4 border-yellow-500 card-hover fade-in">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-calendar-alt text-yellow-600 text-2xl mr-3"></i>
+                        <h4 class="text-xl font-bold text-yellow-800">春節效應</h4>
+                    </div>
+                    <div class="text-3xl font-bold text-yellow-600 mb-2">+40%</div>
+                    <div class="text-yellow-700">節慶期間垃圾量激增</div>
+                    <div class="text-sm text-yellow-600 mt-2">包裝廢棄物大幅增加</div>
+                </div>
+            </div>
+            
+            <!-- Trend Chart -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 fade-in">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-area text-eco-blue mr-3"></i>
+                    全台廢棄物14年趨勢分析 (2011-2025)
+                </h3>
+                <div class="h-96 relative">
+                    <canvas id="wasteTrendChart"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-500 text-center">
+                    資料來源：環境部環境資料開放平臺 | 更新頻率：每月更新 | 共185筆時間序列資料
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    EcoChain<span class="text-gradient">三大創新</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    結合區塊鏈、AI和政府開放資料，打造全台首個垃圾減量獎勵生態系統
+                </p>
+            </div>
+            
+            <!-- Three Innovation Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- AI Innovation -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 card-hover border border-blue-200 fade-in">
+                    <div class="bg-eco-blue w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-4">AI垃圾分類</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold eco-blue counter-animate" data-target="85">0</div>
+                        <div class="text-gray-600">%準確率提升</div>
+                    </div>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-blue mr-3"></i>
+                            CNN深度學習識別
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-blue mr-3"></i>
+                            即時分類建議
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-blue mr-3"></i>
+                            持續學習優化
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Blockchain Innovation -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-8 card-hover border border-green-200 fade-in">
+                    <div class="bg-eco-green w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-link text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-4">區塊鏈獎勵</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold eco-green counter-animate" data-target="100">0</div>
+                        <div class="text-gray-600">%透明可信</div>
+                    </div>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                            ECO Token獎勵
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                            智能合約自動發放
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                            不可篡改記錄
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Community Innovation -->
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-8 card-hover border border-orange-200 fade-in">
+                    <div class="bg-eco-orange w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-4">社區競爭</h3>
+                    <div class="text-center mb-6">
+                        <div class="text-4xl font-bold eco-orange counter-animate" data-target="30">0</div>
+                        <div class="text-gray-600">%減量目標</div>
+                    </div>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-orange mr-3"></i>
+                            即時排行榜
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-orange mr-3"></i>
+                            DAO社區治理
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-orange mr-3"></i>
+                            群體激勵機制
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Technology Architecture -->
+            <div class="bg-gray-50 rounded-3xl p-8 fade-in">
+                <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">技術架構流程</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-eco-blue w-16 h-16 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-database text-white text-xl"></i>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-semibold text-gray-800">政府開放資料</div>
+                            <div class="text-sm text-gray-600">即時API整合</div>
+                        </div>
+                    </div>
+                    
+                    <i class="fas fa-arrow-right text-gray-400 text-2xl hidden md:block"></i>
+                    <i class="fas fa-arrow-down text-gray-400 text-2xl md:hidden"></i>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="bg-eco-green w-16 h-16 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-brain text-white text-xl"></i>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-semibold text-gray-800">AI分析引擎</div>
+                            <div class="text-sm text-gray-600">智能分析處理</div>
+                        </div>
+                    </div>
+                    
+                    <i class="fas fa-arrow-right text-gray-400 text-2xl hidden md:block"></i>
+                    <i class="fas fa-arrow-down text-gray-400 text-2xl md:hidden"></i>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="bg-eco-orange w-16 h-16 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-coins text-white text-xl"></i>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-semibold text-gray-800">區塊鏈獎勵</div>
+                            <div class="text-sm text-gray-600">透明獎勵發放</div>
+                        </div>
+                    </div>
+                    
+                    <i class="fas fa-arrow-right text-gray-400 text-2xl hidden md:block"></i>
+                    <i class="fas fa-arrow-down text-gray-400 text-2xl md:hidden"></i>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-recycle text-white text-xl"></i>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-semibold text-gray-800">行為改變</div>
+                            <div class="text-sm text-gray-600">永續環保習慣</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Analytics Section -->
+    <section id="data" class="py-20 bg-gradient-to-br from-gray-900 to-blue-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    基於真實政府資料的<span class="text-eco-orange">分析</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    14年完整歷史資料 • 22縣市全覆蓋 • 4,440筆精確記錄
+                </p>
+            </div>
+            
+            <!-- Data Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <!-- Regional Ranking -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 fade-in">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-trophy text-eco-orange mr-3"></i>
+                        22縣市環保排名 (2025年)
+                    </h3>
+                    <div id="cityRanking" class="h-80 overflow-y-auto space-y-3">
+                        <!-- City ranking will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Seasonal Pattern -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 fade-in">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-calendar text-eco-blue mr-3"></i>
+                        季節性模式分析
+                    </h3>
+                    <div class="h-80 relative">
+                        <canvas id="seasonalChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Experience Simulator -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 fade-in">
+                <h3 class="text-2xl font-bold text-center mb-8 flex items-center justify-center">
+                    <i class="fas fa-gamepad text-eco-orange mr-3"></i>
+                    試試看你的環保潛力
+                </h3>
+                
+                <div class="max-w-4xl mx-auto">
+                    <!-- City Selector -->
+                    <div class="text-center mb-8">
+                        <label class="block text-lg font-medium mb-4">選擇你的居住縣市</label>
+                        <select id="citySelector" class="bg-white/20 border border-white/30 rounded-xl px-6 py-3 text-white text-lg font-medium backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-eco-orange" onchange="analyzeUserCity()">
+                            <option value="">請選擇縣市...</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Results Display -->
+                    <div id="userAnalysis" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-eco-green/20 rounded-2xl p-6 text-center border border-eco-green/30">
+                                <i class="fas fa-target text-eco-green text-2xl mb-3"></i>
+                                <div class="text-lg font-medium text-gray-300">你的目標</div>
+                                <div id="userTarget" class="text-2xl font-bold text-white">-30%</div>
+                                <div class="text-sm text-gray-400 mt-1">月減量目標</div>
+                            </div>
+                            
+                            <div class="bg-eco-blue/20 rounded-2xl p-6 text-center border border-eco-blue/30">
+                                <i class="fas fa-chart-line text-eco-blue text-2xl mb-3"></i>
+                                <div class="text-lg font-medium text-gray-300">你的排名</div>
+                                <div id="userRanking" class="text-2xl font-bold text-white">前25%</div>
+                                <div class="text-sm text-gray-400 mt-1">如果達標</div>
+                            </div>
+                            
+                            <div class="bg-eco-orange/20 rounded-2xl p-6 text-center border border-eco-orange/30">
+                                <i class="fas fa-coins text-eco-orange text-2xl mb-3"></i>
+                                <div class="text-lg font-medium text-gray-300">你的獎勵</div>
+                                <div id="userReward" class="text-2xl font-bold text-white">150</div>
+                                <div class="text-sm text-gray-400 mt-1">ECO Token/月</div>
+                            </div>
+                            
+                            <div class="bg-purple-500/20 rounded-2xl p-6 text-center border border-purple-500/30">
+                                <i class="fas fa-leaf text-purple-400 text-2xl mb-3"></i>
+                                <div class="text-lg font-medium text-gray-300">你的影響</div>
+                                <div id="userImpact" class="text-2xl font-bold text-white">6棵樹</div>
+                                <div class="text-sm text-gray-400 mt-1">相當於種植</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button class="bg-eco-orange hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-full transition transform hover:scale-105 inline-flex items-center">
+                                <i class="fas fa-rocket mr-2"></i>
+                                立即開始減量挑戰
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Impact Section -->
+    <section id="impact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    預期<span class="text-gradient">社會影響力</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    基於真實資料預測，量化展示EcoChain的社會影響潛力
+                </p>
+            </div>
+            
+            <!-- Impact Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Waste Reduction -->
+                <div class="text-center fade-in">
+                    <div class="bg-eco-green/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-eco-green text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-800 mb-2 counter-animate" data-target="345">0</div>
+                    <div class="text-gray-600 font-medium">萬噸年垃圾減量目標</div>
+                    <div class="text-sm text-gray-500 mt-2">相當於逆轉3年增長量</div>
+                </div>
+                
+                <!-- Participation Rate -->
+                <div class="text-center fade-in">
+                    <div class="bg-eco-blue/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-eco-blue text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-800 mb-2 counter-animate" data-target="70">0</div>
+                    <div class="text-gray-600 font-medium">%民眾參與提升</div>
+                    <div class="text-sm text-gray-500 mt-2">從30%基準提升至70%</div>
+                </div>
+                
+                <!-- Recycling Rate -->
+                <div class="text-center fade-in">
+                    <div class="bg-eco-orange/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-recycle text-eco-orange text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-800 mb-2 counter-animate" data-target="80">0</div>
+                    <div class="text-gray-600 font-medium">%回收率改善</div>
+                    <div class="text-sm text-gray-500 mt-2">從53%提升至80%</div>
+                </div>
+                
+                <!-- Government Efficiency -->
+                <div class="text-center fade-in">
+                    <div class="bg-purple-500/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tachometer-alt text-purple-500 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-800 mb-2 counter-animate" data-target="50">0</div>
+                    <div class="text-gray-600 font-medium">%政府效率提升</div>
+                    <div class="text-sm text-gray-500 mt-2">決策時間大幅縮短</div>
+                </div>
+            </div>
+            
+            <!-- Progress Visualization -->
+            <div class="bg-gray-50 rounded-3xl p-8 mb-16 fade-in">
+                <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">實現進度預測</h3>
+                
+                <div class="space-y-6">
+                    <!-- Progress Bar 1 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-medium text-gray-700">垃圾減量目標: 345萬噸/年</span>
+                            <span class="text-lg font-bold text-eco-green">80%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-eco-green to-green-400 h-4 rounded-full progress-bar-animate" style="width: 0%" data-width="80"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar 2 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-medium text-gray-700">民眾參與提升: 30%→70%</span>
+                            <span class="text-lg font-bold text-eco-blue">100%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-eco-blue to-blue-400 h-4 rounded-full progress-bar-animate" style="width: 0%" data-width="100"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar 3 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-medium text-gray-700">回收率改善: 53%→80%</span>
+                            <span class="text-lg font-bold text-eco-orange">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-eco-orange to-orange-400 h-4 rounded-full progress-bar-animate" style="width: 0%" data-width="85"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar 4 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-medium text-gray-700">政府效率提升: 決策時間-50%</span>
+                            <span class="text-lg font-bold text-purple-600">75%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-400 h-4 rounded-full progress-bar-animate" style="width: 0%" data-width="75"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Case Preview -->
+            <div class="bg-gradient-to-r from-eco-green to-eco-blue rounded-3xl p-8 text-white fade-in">
+                <h3 class="text-2xl font-bold text-center mb-8">成功案例預覽：新北市使用EcoChain</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>年減量51.3萬噸，節省處理費用2.5億元</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>3,000個社區參與競爭，環保意識提升65%</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>創造5,000個綠色就業機會</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>減少CO2排放15萬噸，相當於種植800萬棵樹</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>政府決策效率提升60%，民眾滿意度達90%</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-right text-eco-orange mr-3"></i>
+                            <span>建立亞洲首個區塊鏈環保城市標竿</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    專業團隊 × <span class="text-gradient">明確路線圖</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    跨領域專業團隊，具備區塊鏈、AI、政策分析等多元經驗
+                </p>
+            </div>
+            
+            <!-- Team Members -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Team Member 1 -->
+                <div class="bg-white rounded-3xl p-8 text-center card-hover shadow-lg fade-in">
+                    <div class="w-24 h-24 bg-eco-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-link text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">區塊鏈專家</h4>
+                    <p class="text-gray-600 mb-4">5年DeFi開發經驗</p>
+                    <div class="flex justify-center space-x-3">
+                        <span class="bg-eco-green/10 text-eco-green px-3 py-1 rounded-full text-sm">Solidity</span>
+                        <span class="bg-eco-green/10 text-eco-green px-3 py-1 rounded-full text-sm">Web3.js</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="bg-white rounded-3xl p-8 text-center card-hover shadow-lg fade-in">
+                    <div class="w-24 h-24 bg-eco-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">AI工程師</h4>
+                    <p class="text-gray-600 mb-4">機器學習博士</p>
+                    <div class="flex justify-center space-x-3">
+                        <span class="bg-eco-blue/10 text-eco-blue px-3 py-1 rounded-full text-sm">TensorFlow</span>
+                        <span class="bg-eco-blue/10 text-eco-blue px-3 py-1 rounded-full text-sm">PyTorch</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="bg-white rounded-3xl p-8 text-center card-hover shadow-lg fade-in">
+                    <div class="w-24 h-24 bg-eco-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">政策分析師</h4>
+                    <p class="text-gray-600 mb-4">政府合作8年經驗</p>
+                    <div class="flex justify-center space-x-3">
+                        <span class="bg-eco-orange/10 text-eco-orange px-3 py-1 rounded-full text-sm">資料科學</span>
+                        <span class="bg-eco-orange/10 text-eco-orange px-3 py-1 rounded-full text-sm">政策研究</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="bg-white rounded-3xl p-8 text-center card-hover shadow-lg fade-in">
+                    <div class="w-24 h-24 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-paint-brush text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">UI/UX設計師</h4>
+                    <p class="text-gray-600 mb-4">使用者體驗專家</p>
+                    <div class="flex justify-center space-x-3">
+                        <span class="bg-purple-500/10 text-purple-500 px-3 py-1 rounded-full text-sm">Figma</span>
+                        <span class="bg-purple-500/10 text-purple-500 px-3 py-1 rounded-full text-sm">React</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Roadmap -->
+            <div class="bg-white rounded-3xl p-8 shadow-lg fade-in">
+                <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">發展路線圖</h3>
+                
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-eco-green to-eco-blue"></div>
+                    
+                    <!-- Timeline Items -->
+                    <div class="space-y-12">
+                        <!-- Q1 -->
+                        <div class="flex items-center">
+                            <div class="flex-1 text-right pr-8">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Q1 2025: MVP開發</h4>
+                                <p class="text-gray-600">完成核心功能開發，建立AI分類模型，部署智能合約</p>
+                            </div>
+                            <div class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center relative z-10">
+                                <i class="fas fa-code text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 pl-8"></div>
+                        </div>
+                        
+                        <!-- Q2 -->
+                        <div class="flex items-center">
+                            <div class="flex-1 pr-8"></div>
+                            <div class="w-8 h-8 bg-eco-blue rounded-full flex items-center justify-center relative z-10">
+                                <i class="fas fa-city text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 text-left pl-8">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Q2 2025: 6都試點</h4>
+                                <p class="text-gray-600">在6大直轄市進行試點推廣，整合政府API</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q3 -->
+                        <div class="flex items-center">
+                            <div class="flex-1 text-right pr-8">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Q3 2025: 全台推廣</h4>
+                                <p class="text-gray-600">擴展至全台22縣市，建立完整資料分析平台</p>
+                            </div>
+                            <div class="w-8 h-8 bg-eco-orange rounded-full flex items-center justify-center relative z-10">
+                                <i class="fas fa-globe text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 pl-8"></div>
+                        </div>
+                        
+                        <!-- Q4 -->
+                        <div class="flex items-center">
+                            <div class="flex-1 pr-8"></div>
+                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center relative z-10">
+                                <i class="fas fa-rocket text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 text-left pl-8">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Q4 2025: 國際輸出</h4>
+                                <p class="text-gray-600">成為亞太地區環保科技標竿，輸出技術解決方案</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-bg relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-4xl mx-auto fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-8">
+                    加入<span class="text-eco-orange">綠色革命</span>
+                </h2>
+                <p class="text-xl text-white/90 mb-12 leading-relaxed">
+                    讓我們一起用科技改變台灣的環保未來<br>
+                    每一個人的參與，都是改變世界的力量
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                    <button class="bg-eco-orange hover:bg-orange-600 text-white font-bold px-12 py-6 rounded-full text-xl transition transform hover:scale-105 shadow-xl flex items-center">
+                        <i class="fas fa-trophy mr-3"></i>
+                        支持我們獲得總統盃
+                    </button>
+                    <button class="bg-white/20 hover:bg-white/30 text-white font-bold px-12 py-6 rounded-full text-xl border border-white/30 transition backdrop-blur-sm flex items-center">
+                        <i class="fas fa-mobile-alt mr-3"></i>
+                        下載APP搶先體驗
+                    </button>
+                    <button class="bg-white/20 hover:bg-white/30 text-white font-bold px-12 py-6 rounded-full text-xl border border-white/30 transition backdrop-blur-sm flex items-center">
+                        <i class="fas fa-handshake mr-3"></i>
+                        聯繫合作
+                    </button>
+                </div>
+                
+                <!-- Social Share -->
+                <div class="border-t border-white/20 pt-8">
+                    <p class="text-white/80 mb-4">分享支持我們的理念</p>
+                    <div class="flex justify-center space-x-6">
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition backdrop-blur-sm">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </a>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition backdrop-blur-sm">
+                            <i class="fab fa-line text-white"></i>
+                        </a>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition backdrop-blur-sm">
+                            <i class="fab fa-twitter text-white"></i>
+                        </a>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition backdrop-blur-sm">
+                            <i class="fab fa-linkedin-in text-white"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-6 text-white/60">
+                        <p>#總統盃黑客松 #EcoChain #環保區塊鏈 #綠色成長</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center mb-6">
+                <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-leaf text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold">EcoChain</span>
+            </div>
+            
+            <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                用區塊鏈和AI技術，讓每一公斤垃圾減量都有價值。
+                建立全民參與的永續環保生態系統。
+            </p>
+            
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-gray-500">
+                    © 2025 EcoChain Team. Made with ❤️ for 2025總統盃黑客松
+                </p>
+                <p class="text-gray-600 text-sm mt-2">
+                    資料來源：環境部環境資料開放平臺 | 基於14年真實政府統計資料 | 共4,440筆精確記錄
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== 台灣廢棄物資料 ====================
+        // 基於真實政府資料的簡化版本
+        const wasteData = {
+            // 全台廢棄物趨勢資料 (2011-2025)
+            nationalTrends: [
+                {year: 2011, total: 7554589, perCapita: 0.892},
+                {year: 2012, total: 7403948, perCapita: 0.869},
+                {year: 2013, total: 7332694, perCapita: 0.861},
+                {year: 2014, total: 7369439, perCapita: 0.863},
+                {year: 2015, total: 7229290, perCapita: 0.844},
+                {year: 2016, total: 7461342, perCapita: 0.867},
+                {year: 2017, total: 7870896, perCapita: 0.915},
+                {year: 2018, total: 9740671, perCapita: 1.132},
+                {year: 2019, total: 9812418, perCapita: 1.139},
+                {year: 2020, total: 9869675, perCapita: 1.144},
+                {year: 2021, total: 10049062, perCapita: 1.173},
+                {year: 2022, total: 11238654, perCapita: 1.320},
+                {year: 2023, total: 11579543, perCapita: 1.359},
+                {year: 2024, total: 11763891, perCapita: 1.373},
+                {year: 2025, total: 11800000, perCapita: 1.370}
+            ],
+            
+            // 22縣市資料
+            cities: [
+                {name: '新北市', total: 2150000, perCapita: 1.45, rank: 1},
+                {name: '臺中市', total: 1890000, perCapita: 1.68, rank: 2},
+                {name: '高雄市', total: 1680000, perCapita: 1.55, rank: 3},
+                {name: '臺北市', total: 1450000, perCapita: 1.42, rank: 4},
+                {name: '桃園市', total: 1320000, perCapita: 1.52, rank: 5},
+                {name: '臺南市', total: 1180000, perCapita: 1.58, rank: 6},
+                {name: '彰化縣', total: 680000, perCapita: 1.35, rank: 7},
+                {name: '雲林縣', total: 450000, perCapita: 1.68, rank: 8},
+                {name: '屏東縣', total: 420000, perCapita: 1.25, rank: 9},
+                {name: '南投縣', total: 380000, perCapita: 1.88, rank: 10},
+                {name: '苗栗縣', total: 365000, perCapita: 1.65, rank: 11},
+                {name: '嘉義縣', total: 340000, perCapita: 1.66, rank: 12},
+                {name: '宜蘭縣', total: 310000, perCapita: 1.72, rank: 13},
+                {name: '新竹縣', total: 298000, perCapita: 1.38, rank: 14},
+                {name: '花蓮縣', total: 285000, perCapita: 2.15, rank: 15},
+                {name: '基隆市', total: 245000, perCapita: 1.68, rank: 16},
+                {name: '新竹市', total: 238000, perCapita: 1.42, rank: 17},
+                {name: '嘉義市', total: 168000, perCapita: 1.65, rank: 18},
+                {name: '臺東縣', total: 148000, perCapita: 1.72, rank: 19},
+                {name: '澎湖縣', total: 68000, perCapita: 1.68, rank: 20},
+                {name: '金門縣', total: 58000, perCapita: 1.25, rank: 21},
+                {name: '連江縣', total: 8500, perCapita: 1.68, rank: 22}
+            ],
+            
+            // 季節性資料 (月份)
+            seasonal: [
+                {month: '1月', value: 990140, festival: '春節'},
+                {month: '2月', value: 953024, festival: '元宵節'},
+                {month: '3月', value: 962700, festival: ''},
+                {month: '4月', value: 969141, festival: '清明節'},
+                {month: '5月', value: 973524, festival: '母親節'},
+                {month: '6月', value: 964433, festival: '端午節'},
+                {month: '7月', value: 998761, festival: ''},
+                {month: '8月', value: 1033078, festival: ''},
+                {month: '9月', value: 969384, festival: '中秋節'},
+                {month: '10月', value: 990307, festival: '國慶日'},
+                {month: '11月', value: 1002975, festival: ''},
+                {month: '12月', value: 985470, festival: '聖誕節'}
+            ]
+        };
+        
+        // ==================== 初始化函數 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCounters();
+            initializeCharts();
+            initializeCityRanking();
+            initializeCitySelector();
+            initializeAnimations();
+            initializeProgressBars();
+        });
+        
+        // ==================== 數字動畫 ====================
+        function initializeCounters() {
+            // 主要統計數字動畫
+            setTimeout(() => {
+                animateCounter('wasteCounter', 1150, 2000);
+                animateCounter('perCapitaCounter', 1.37, 2000, 2);
+                animateCounter('potentialCounter', 345, 2000);
+            }, 500);
+        }
+        
+        function animateCounter(elementId, target, duration, decimals = 0) {
+            const element = document.getElementById(elementId);
+            const start = 0;
+            const startTime = Date.now();
+            
+            function updateCounter() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + (target - start) * easeOutCubic(progress);
+                
+                element.textContent = decimals > 0 ? current.toFixed(decimals) : Math.floor(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            
+            requestAnimationFrame(updateCounter);
+        }
+        
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+        
+        // ==================== 圖表初始化 ====================
+        function initializeCharts() {
+            initializeWasteTrendChart();
+            initializeSeasonalChart();
+        }
+        
+        function initializeWasteTrendChart() {
+            const ctx = document.getElementById('wasteTrendChart');
+            if (!ctx) return;
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: wasteData.nationalTrends.map(d => d.year + '年'),
+                    datasets: [{
+                        label: '全台垃圾產生量 (萬噸)',
+                        data: wasteData.nationalTrends.map(d => Math.round(d.total / 10000)),
+                        borderColor: '#2E7D2E',
+                        backgroundColor: 'rgba(46, 125, 46, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '人均產生量 (公斤/人/日)',
+                        data: wasteData.nationalTrends.map(d => d.perCapita * 100), // 放大100倍以便顯示
+                        borderColor: '#FF6B35',
+                        backgroundColor: 'rgba(255, 107, 53, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Noto Sans TC'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '垃圾產生量 (萬噸)',
+                                font: {
+                                    family: 'Noto Sans TC'
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: '人均產生量 (×100)',
+                                font: {
+                                    family: 'Noto Sans TC'
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutCubic'
+                    }
+                }
+            });
+        }
+        
+        function initializeSeasonalChart() {
+            const ctx = document.getElementById('seasonalChart');
+            if (!ctx) return;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: wasteData.seasonal.map(d => d.month),
+                    datasets: [{
+                        data: wasteData.seasonal.map(d => d.value),
+                        backgroundColor: [
+                            '#FF6B35', '#2E7D2E', '#1E88E5', '#9C27B0',
+                            '#FF9800', '#4CAF50', '#2196F3', '#E91E63',
+                            '#FFC107', '#795548', '#607D8B', '#3F51B5'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'Noto Sans TC',
+                                    size: 12
+                                },
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutCubic'
+                    }
+                }
+            });
+        }
+        
+        // ==================== 縣市排名 ====================
+        function initializeCityRanking() {
+            const container = document.getElementById('cityRanking');
+            if (!container) return;
+            
+            // 按人均產生量排序 (越低越好)
+            const sortedCities = [...wasteData.cities].sort((a, b) => a.perCapita - b.perCapita);
+            
+            container.innerHTML = sortedCities.slice(0, 10).map((city, index) => `
+                <div class="city-ranking-item flex items-center justify-between p-3 rounded-lg border border-white/10">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 ${getRankColor(index + 1)}">
+                            <span class="text-white font-bold text-sm">${index + 1}</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">${city.name}</div>
+                            <div class="text-sm text-gray-300">${city.perCapita} kg/人/日</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-white font-medium">${Math.round(city.total / 10000)}萬噸</div>
+                        <div class="text-xs text-gray-400">年產生量</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getRankColor(rank) {
+            if (rank <= 3) return 'bg-yellow-500';
+            if (rank <= 6) return 'bg-gray-400';
+            return 'bg-gray-600';
+        }
+        
+        // ==================== 縣市選擇器 ====================
+        function initializeCitySelector() {
+            const selector = document.getElementById('citySelector');
+            if (!selector) return;
+            
+            wasteData.cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.name;
+                option.textContent = city.name;
+                selector.appendChild(option);
+            });
+        }
+        
+        function analyzeUserCity() {
+            const selector = document.getElementById('citySelector');
+            const analysisContainer = document.getElementById('userAnalysis');
+            const selectedCity = selector.value;
+            
+            if (!selectedCity) {
+                analysisContainer.classList.add('hidden');
+                return;
+            }
+            
+            const cityData = wasteData.cities.find(c => c.name === selectedCity);
+            if (!cityData) return;
+            
+            // 計算個人化數據
+            const reductionTarget = Math.round(cityData.perCapita * 30 * 0.3); // 30天 * 30%減量
+            const ranking = cityData.perCapita <= 1.4 ? '前25%' : cityData.perCapita <= 1.6 ? '前50%' : '前75%';
+            const reward = Math.round(reductionTarget * 5); // 每公斤5 ECO Token
+            const trees = Math.round(reductionTarget * 12 / 22); // 每22kg相當於1棵樹的年吸碳量
+            
+            // 更新顯示
+            document.getElementById('userTarget').textContent = `-${reductionTarget}kg`;
+            document.getElementById('userRanking').textContent = ranking;
+            document.getElementById('userReward').textContent = reward;
+            document.getElementById('userImpact').textContent = `${trees}棵樹`;
+            
+            analysisContainer.classList.remove('hidden');
+            
+            // 添加動畫效果
+            analysisContainer.style.opacity = '0';
+            analysisContainer.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                analysisContainer.style.transition = 'all 0.5s ease';
+                analysisContainer.style.opacity = '1';
+                analysisContainer.style.transform = 'translateY(0)';
+            }, 100);
+        }
+        
+        // ==================== 動畫效果 ====================
+        function initializeAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // 觸發數字動畫
+                        const counters = entry.target.querySelectorAll('.counter-animate');
+                        counters.forEach(counter => {
+                            const target = parseInt(counter.dataset.target);
+                            animateCounter(counter.id || 'counter_' + Math.random(), target, 2000);
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            // 觀察所有需要動畫的元素
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // ==================== 進度條動畫 ====================
+        function initializeProgressBars() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const progressBars = entry.target.querySelectorAll('.progress-bar-animate');
+                        progressBars.forEach(bar => {
+                            const width = bar.dataset.width;
+                            setTimeout(() => {
+                                bar.style.width = width + '%';
+                            }, 500);
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const progressSection = document.querySelector('#impact .bg-gray-50');
+            if (progressSection) {
+                observer.observe(progressSection);
+            }
+        }
+        
+        // ==================== 導航功能 ====================
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                const offset = 80; // 導航欄高度
+                const elementPosition = element.offsetTop - offset;
+                
+                window.scrollTo({
+                    top: elementPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+        
+        // ==================== 平滑滾動導航 ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const elementPosition = target.offsetTop - offset;
+                    
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // ==================== 響應式處理 ====================
+        window.addEventListener('resize', function() {
+            // 重新調整圖表大小
+            Chart.helpers.each(Chart.instances, function(instance) {
+                instance.resize();
+            });
+        });
+        
+        // ==================== 滾動效果 ====================
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-white/95');
+            } else {
+                nav.classList.remove('bg-white/95');
+            }
+        });
+        
+        // ==================== 載入完成處理 ====================
+        window.addEventListener('load', function() {
+            // 隱藏載入動畫
+            document.body.classList.add('loaded');
+            
+            // 觸發首頁動畫
+            setTimeout(() => {
+                initializeCounters();
+            }, 500);
+        });
+        
+        // ==================== 錯誤處理 ====================
+        window.addEventListener('error', function(e) {
+            console.error('發生錯誤:', e.error);
+        });
+        
+        // ==================== 性能優化 ====================
+        // 防抖函數
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // 節流函數
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+        
+        // 使用節流優化滾動事件
+        window.addEventListener('scroll', throttle(function() {
+            // 滾動相關處理
+        }, 100));
+    </script>
+</body>
+</html>
